@@ -15,6 +15,9 @@ using System.Xml.Linq;
 using AutoMapper;
 using ProjectManagementSystem.ViewModels;
 using MimeKit;
+using MimeKit.Text;
+using SmtpClient = MailKit.Net.Smtp.SmtpClient;
+using MailKit.Security;
 
 namespace ProjectManagementSystem.Controllers
 {
@@ -77,57 +80,10 @@ namespace ProjectManagementSystem.Controllers
             var user = db.Users.FirstOrDefaultAsync(x => x.Email == obj.Email);
             if (user != null)
             {
-                String SendMailFrom = "tes01.star@gmail.com";
-                String SendMailTo = "tashievemir01@gmail.com";
-                String SendMailSubject = "Email Subject";
-                String SendMailBody = "Email Body";
                 try 
                 {
-                    SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com", 465);
-                    SmtpServer.DeliveryMethod = SmtpDeliveryMethod.Network;
-                    MailMessage email = new MailMessage();
-                    // START
-                    email.From = new MailAddress(SendMailFrom);
-                    email.To.Add(SendMailTo);
-                    email.CC.Add(SendMailFrom);
-                    email.Subject = SendMailSubject;
-                    email.Body = SendMailBody;
-                    //END
-                    SmtpServer.Timeout = 10000;
-                    SmtpServer.EnableSsl = true;
-                    SmtpServer.UseDefaultCredentials = false;
-                    SmtpServer.Credentials = new NetworkCredential(SendMailFrom, "Kandaysinar*2018");
-                    SmtpServer.Send(email);
-
-                    /*var message = new MimeMessage();
-                    message.From.Add(new MailboxAddress("Emir", "sender@yourdomain.com"));
-                    message.To.Add(new MailboxAddress("Emir", "recipient@theirdomain.com"));
-                    message.Subject = "MailKit Test";
-                    message.Body = new TextPart("plain") { Text = "Hi from MailKit!" };
-
-                    using (var client = new SmtpClient())
-                    {
-                        client.Connect("mail.gmail.com", 587);
-                        client.Authenticate("your_username", "your_password");
-                        client.Send(message);
-                        client.Disconnect(true);
-                    }
-                    string senderEmail = "tes01.star@gmail.com";
-                    string senderPassword = "Kandaysinar*2018";*/
-
-                    //string receiverEmail = "tashievemir01@gmail.com";
-
-                    // Create SMTP client
-                    //SmtpClient client = new SmtpClient("smtp.example.com", 465);
-                    //client.UseDefaultCredentials = false;
-                    //client.EnableSsl = true;
-                    //client.Credentials = new NetworkCredential(senderEmail, senderPassword);
-
-                    /*MailMessage message = new MailMessage(senderEmail, receiverEmail);
-                    message.Subject = "Test email";
-                    message.Body = "This is a test email sent using C#.";*/
-
-                    //client.Send(message);
+                    SendEmail();    
+                    return Ok();
                 }
                 catch (Exception ex)
                 {
@@ -137,8 +93,33 @@ namespace ProjectManagementSystem.Controllers
             }
             else return NotFound();
         }
+        public void SendEmail()
+        {
+            String SendMailFrom = "tes01.star@gmail.com";
+            String SendMailTo = "tashievemir01@gmail.com";
+            var email = new MimeMessage();
 
-        [HttpPost("action")]
+            email.From.Add(MailboxAddress.Parse(SendMailFrom));
+
+            email.To.Add(MailboxAddress.Parse(SendMailTo));
+
+            email.Subject = "Title";
+
+            email.Body = new TextPart(TextFormat.Html) { Text = $"<a href=\"http://localhost:63342/front/pages/main.html?_ijt=8c8usg8e3a0u0l4tq1rn6sl4dl&_ij_reload=RELOAD_ON_SAVE\">Reset Password</a>" };
+
+
+            using var smtp = new SmtpClient();
+
+            smtp.Connect("smtp.gmail.com", 587, SecureSocketOptions.StartTls);
+
+            smtp.Authenticate(SendMailFrom, "hwxrwoardwqjpdkn");
+
+            smtp.Send(email);
+
+            smtp.Disconnect(true);
+        }
+
+        [HttpPost]
         public async Task<ActionResult<AppUser>> CheckCodeEmail(int receiveCode)
         {
             if(receiveCode==code) return Ok();
@@ -175,22 +156,6 @@ namespace ProjectManagementSystem.Controllers
             await db.SaveChangesAsync();
             return Ok(user);
         }
-        public string ComputeSha256Hash(string rawData)
-        {
-            // Create a SHA256   
-            using (SHA256 sha256Hash = SHA256.Create())
-            {
-                // ComputeHash - returns byte array  
-                byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(rawData));
-
-                // Convert byte array to a string   
-                StringBuilder builder = new StringBuilder();
-                for (int i = 0; i < bytes.Length; i++)
-                {
-                    builder.Append(bytes[i].ToString("x2"));
-                }
-                return builder.ToString();
-            }
-        }*/
+        */
     }
 }

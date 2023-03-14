@@ -1,0 +1,52 @@
+body{
+    font-family: "Comic Sans MS";
+    color: #1e0000;
+    background-color: #EBDCB2;
+    text-align: center;
+}
+.signup{
+    background-color: #C9A66B;
+    text-align: center;
+    height: 100vh;
+    width: 50%;
+    margin-left: 25%;
+}
+.imgLogo{
+    background-color: #C9A66B;
+    height: 200px;
+    weight: 200px
+}
+.imgSignIn{
+    margin-top: 40px;
+    margin-left: 50px;
+    height: 150px;
+    weight: 150px;
+    display: none;
+}
+.signIn{
+    display: flex;
+}
+.signIn h3{
+    display: flex;
+}
+button{
+    background-color: #EBDCB2;
+    margin-top: 20px;
+    border: 0;
+    margin-right: 40px;
+}
+h4{
+    margin-top: 20px;
+}
+.fields{
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    margin: auto;
+
+}
+.form-input{
+    width: 100%
+}
+
