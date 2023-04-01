@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Welcome</title>
+    <link rel="stylesheet" type="text/css" href="../styles/welcome.css">
+</head>
+<body>
+<header>
+    <div class="logo">
+        <img src="/pictures/logo.png" alt="logo" width="60px" height="60px">
+        <h1>ProjectMS</h1>
+    </div>
+    <button onclick="LogOut()">Log out</button>
+</header>
+<main>
+    <aside>
+        <img src="/pictures/menu.png" alt="menu" width="50px" height="50px">
+        <button onclick="openProjects()">Projects</button>
+        <button onclick="addProject()">Add Project</button>
+        <button onclick="addTask()">Add Task</button>
+    </aside>
+    <section>
+        <img src="/pictures/logo.png" alt="logo" width="200px" height="200px">
+        <p>Welcome to the Emir's Project Management System</p>
+    </section>
+
+</main>
+<footer>
+    <p>Powered by &copy; ChatGPT</p>
+</footer>
+<script>
+    window.history.forward();
+    function noBack() {
+        window.history.forward();
+    }
+</script>
+<script src="../scripts/welcome.js"></script>
+</body>
+</html>

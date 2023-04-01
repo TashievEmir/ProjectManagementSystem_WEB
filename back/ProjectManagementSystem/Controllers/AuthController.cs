@@ -1,23 +1,18 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ProjectManagementSystem.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Mail;
-using System.Net;
-using System.Security.Cryptography;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using System.Xml.Linq;
 using AutoMapper;
 using ProjectManagementSystem.ViewModels;
 using MimeKit;
 using MimeKit.Text;
 using SmtpClient = MailKit.Net.Smtp.SmtpClient;
 using MailKit.Security;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace ProjectManagementSystem.Controllers
 {
@@ -25,22 +20,17 @@ namespace ProjectManagementSystem.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private int code;
+        private IMemoryCache cache;
         ApplicationContext db;
         private readonly IMapper _mapper;
-        public AuthController(ApplicationContext db, IMapper mapper)
+        public AuthController(ApplicationContext db, IMapper mapper, IMemoryCache cache)
         {
             this.db = db;
             _mapper = mapper;
+            this.cache=cache;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<AppUser>>> Get()
-        {
-            return await db.Users.ToListAsync();
-        }
-
-        // POST auth?name=emir&password=123
+        // check is the user exist
         [HttpPost]
         public async Task<ActionResult<AppUser>> Authent(UserSignInRequest obj)
         {
@@ -53,6 +43,7 @@ namespace ProjectManagementSystem.Controllers
             return Ok();
         }
 
+        //create new user
         [HttpPost]
         public async Task<ActionResult<AppUser>> SignUp(UserSignUpRequest obj)
         {
@@ -74,29 +65,38 @@ namespace ProjectManagementSystem.Controllers
             return Ok(user);
         }
 
+        // check email for verification for create new password
         [HttpPost]
         public async Task<ActionResult<AppUser>> CheckSuchEmailExist(UserSignInRequest obj)
         {
-            var user = db.Users.FirstOrDefaultAsync(x => x.Email == obj.Email);
+            ObjectCache objcache=new ObjectCache();
+            var user = await db.Users.FirstOrDefaultAsync(x => x.Email == obj.Email);
             if (user != null)
             {
-                try 
+                try
                 {
-                    SendEmail();    
+                    Random random = new Random();
+                    objcache.code = random.Next(1000, 10000);
+                    SendEmail(objcache.code, obj.Email);
+                    cache.Set(user.Id, objcache, new MemoryCacheEntryOptions
+                    {
+                        AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(3)
+                    });
                     return Ok();
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("Error: " + ex.Message);
+                    return BadRequest();
                 }
-                return Ok();
             }
             else return NotFound();
         }
-        public void SendEmail()
+
+        //send verification code to the user
+        public void SendEmail(int code, string mail)
         {
             String SendMailFrom = "tes01.star@gmail.com";
-            String SendMailTo = "tashievemir01@gmail.com";
+            String SendMailTo = mail;
             var email = new MimeMessage();
 
             email.From.Add(MailboxAddress.Parse(SendMailFrom));
@@ -105,8 +105,7 @@ namespace ProjectManagementSystem.Controllers
 
             email.Subject = "Title";
 
-            email.Body = new TextPart(TextFormat.Html) { Text = $"<a href=\"http://localhost:63342/front/pages/main.html?_ijt=8c8usg8e3a0u0l4tq1rn6sl4dl&_ij_reload=RELOAD_ON_SAVE\">Reset Password</a>" };
-
+            email.Body = new TextPart(TextFormat.Text) { Text = $" Your verification code: {code} " };
 
             using var smtp = new SmtpClient();
 
@@ -119,43 +118,34 @@ namespace ProjectManagementSystem.Controllers
             smtp.Disconnect(true);
         }
 
+        //this func check code which was has sent to user's email
         [HttpPost]
-        public async Task<ActionResult<AppUser>> CheckCodeEmail(int receiveCode)
+        public async Task<ActionResult<AppUser>> CheckCodeEmail(UserCheckCode obj)
         {
-            if(receiveCode==code) return Ok();
-            else return BadRequest();
-        }
-        // PUT api/users/
-        /*[HttpPut]
-        public async Task<ActionResult<AppUser>> Put(AppUser user)
-        {
-            if (user == null)
+            ObjectCache objectCache = new ObjectCache();
+            var user = await db.Users.FirstOrDefaultAsync(x => x.Email == obj.Email);
+            if (!cache.TryGetValue(user.Id,out objectCache))
             {
                 return BadRequest();
             }
-            if (!db.Users.Any(x => x.Id == user.Id))
+            else
             {
-                return NotFound();
+                if (obj.Code == objectCache.code) return Ok();
+                return BadRequest();
             }
-
-            db.Update(user);
-            await db.SaveChangesAsync();
-            return Ok(user);
         }
 
-        // DELETE api/users/5
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<AppUser>> Delete(int id)
+        //create new password for the user
+        [HttpPost]
+        public async Task<ActionResult<AppUser>> CreateNewPassword(UserSignInRequest obj)
         {
-            AppUser user = db.Users.FirstOrDefault(x => x.Id == id);
-            if (user == null)
-            {
-                return NotFound();
-            }
-            db.Users.Remove(user);
-            await db.SaveChangesAsync();
-            return Ok(user);
+            var user = db.Users.FirstOrDefault(x => x.Email == obj.Email);
+            if (user == null) return NotFound();
+            user.Password=obj.Password;
+            user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
+            db.Entry(user).State = EntityState.Modified;
+            db.SaveChanges();
+            return Ok();
         }
-        */
     }
 }

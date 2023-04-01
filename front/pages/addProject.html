@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Project</title>
+    <link rel="stylesheet" type="text/css" href="../styles/addProject.css">
+</head>
+<body>
+<header>
+    <div class="logo">
+        <img src="/pictures/logo.png" alt="logo" width="60px" height="60px">
+        <h1>ProjectMS</h1>
+    </div>
+    <button onclick="LogOut()">Log out</button>
+</header>
+<main>
+    <aside>
+        <img src="/pictures/menu.png" alt="menu" width="50px" height="50px">
+        <button onclick="openProjects()">Projects</button>
+        <button onclick="addProject()">Add Project</button>
+        <button onclick="addTask()">Add Task</button>
+    </aside>
+    <section>
+        <h3>For creatinga a new project please fill all blankets!</h3>
+        <table>
+            <tr>
+                <td><p>Project's name: </p> <input id="name"></td>
+                <td><p>Project's start date: </p> <input id="startdate" type="date"></td>
+            </tr>
+            <tr>
+                <td><p>Project's manager: </p> <select id="managers">
+                                                </select>
+                </td>
+                <td><p>Project's end date: </p> <input id="enddate" type="date"></td>
+            </tr>
+            <tr>
+                <td> <p>Project's status: </p> <select id="status">
+                                                    <option value="1">not started</option>
+                                                    <option value="2">in process</option>
+                                                    <option value="3">finished</option>
+                                                </select>
+                </td>
+                <td> <p>Project's members: </p> <select id="members">
+
+                                                </select>
+                </td>
+            </tr>
+            <tr>
+                <button onclick="Save()">Save</button>
+            </tr>
+        </table>
+    </section>
+
+</main>
+<footer>
+    <p>Powered by &copy; ChatGPT</p>
+</footer>
+<script>
+    window.history.forward();
+    function noBack() {
+        window.history.forward();
+    }
+</script>
+<script src="../scripts/addProject.js"></script>
+</body>
+</html>

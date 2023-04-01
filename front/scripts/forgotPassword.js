@@ -1,18 +1,19 @@
 async function Update(){
-    let email=document.getElementById("email");
-    let password=document.getElementById("password");
-    let passwordRepeat=document.getElementById("passwordRepeat");
+    let email=document.getElementById("email").value;
+    let password=document.getElementById("password").value;
+    let passwordRepeat=document.getElementById("passwordRepeat").value;
+
     if(password!=="" && password==passwordRepeat){
         let data={
-            "email":`${email}`,
-            "password":`${password}`
+            "Email":`${email}`,
+            "Password":`${password}`
         }
-        const response= await fetch(`https://localhost:44345/auth/forgot`,{
+        const response= await fetch(`https://localhost:44345/api/auth/CreateNewPassword`,{
             method:"POST",
             headers:{"Content-Type":"application/json"},
             body: JSON.stringify(data)
         });
-        const user=await response.json();
+        //await response.json();
         if(response.ok){
             window.location.href="authentification.html"
         }

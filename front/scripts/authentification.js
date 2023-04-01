@@ -15,7 +15,7 @@ async function authentificate(){
             body: JSON.stringify(data)
         });
         if(response.ok){
-            window.location.href="main.html"
+            window.location.href="welcome.html"
         }
         else{
             alert("Incorrect name or password, please try again")
@@ -41,14 +41,15 @@ async function forgot(){
         confirm('The code for reset password was sent to your email, if you you get it press the submit button and input your code')
         let code=prompt("input code","");
         let submitCode={
-            "code":`${code}`
+            "code": `${code}`,
+            "email": `${mail}`
         }
+        debugger
         const request= await fetch(`https://localhost:44345/api/auth/checkcodeemail`,{
             method:"POST",
             headers:{"Content-Type":"application/json"},
             body: JSON.stringify(submitCode)
         });
-        await request.json();
         if(request.ok) window.location.href="forgotPassword.html"
         else alert("code hasn't matched");
     }

@@ -6,7 +6,7 @@ async function SignUp(){
     let password=document.getElementById("password").value;
     let passwordRepeat=document.getElementById("passwordRepeat").value;
 
-    if(name!="" && surname!="" && role!="" && password!=="" && password==passwordRepeat){
+    if(name!="" && surname!="" && role!="" && email!="" && password!=="" && password==passwordRepeat){
         let data={
             "email":`${email}`,
             "password":`${password}`,
@@ -14,13 +14,11 @@ async function SignUp(){
             "surname":`${surname}`,
             "role": Number(role)
         }
-        console.log(data);
         const response= await fetch(`https://localhost:44345/api/auth/signup`,{
             method:"POST",
             headers:{"Content-Type":"application/json"},
             body: JSON.stringify(data)
         });
-        debugger
         await response.json();
         if(response.ok){
             window.location.href="authentification.html"
