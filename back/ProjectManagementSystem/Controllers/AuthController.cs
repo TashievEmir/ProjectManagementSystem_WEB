@@ -13,6 +13,10 @@ using MimeKit.Text;
 using SmtpClient = MailKit.Net.Smtp.SmtpClient;
 using MailKit.Security;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.IdentityModel.Tokens;
+using ProjectManagementSystem.Token;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace ProjectManagementSystem.Controllers
 {
@@ -30,17 +34,70 @@ namespace ProjectManagementSystem.Controllers
             this.cache=cache;
         }
 
-        // check is the user exist
         [HttpPost]
-        public async Task<ActionResult<AppUser>> Authent(UserSignInRequest obj)
+        public IActionResult Token(UserSignInRequest obj)
         {
-            var user = db.Users.FirstOrDefault(x => x.Email == obj.Email);
-            if (user == null) return Unauthorized();
-            if(!BCrypt.Net.BCrypt.Verify(obj.Password, user.Password))
+            var identity = GetIdentity(obj.Email, obj.Password);
+            if (identity == null)
             {
-                return Unauthorized();
+                return BadRequest(new { errorText = "Invalid username or password." });
             }
-            return Ok();
+
+            var now = DateTime.UtcNow;
+            // создаем JWT-токен
+            var jwt = new JwtSecurityToken(
+                    issuer: AuthOptions.ISSUER,
+                    audience: AuthOptions.AUDIENCE,
+                    notBefore: now,
+                    claims: identity.Claims,
+                    expires: now.Add(TimeSpan.FromMinutes(AuthOptions.LIFETIME)),
+                    signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
+            var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
+
+            var response = new
+            {
+                access_token = encodedJwt,
+                username = identity.Name,
+                role = identity.Claims.ElementAt(1).Value
+            };
+
+            return new JsonResult(response);
+        }
+
+        private ClaimsIdentity GetIdentity(string email, string password)
+        {
+            AppUser person = db.Users.FirstOrDefault(x => x.Email == email);
+            if (!BCrypt.Net.BCrypt.Verify(password, person.Password))
+            {
+                person=null;
+            }
+            if (person != null)
+            {
+                List<Claim> claims;
+                if (person.Role==1)
+                {
+                    claims = new List<Claim>
+                    {
+                    new Claim(ClaimsIdentity.DefaultNameClaimType, person.Email),
+                    new Claim(ClaimsIdentity.DefaultRoleClaimType, "manager")
+                    };
+                }
+                else
+                {
+                    claims = new List<Claim>
+                    {
+                    new Claim(ClaimsIdentity.DefaultNameClaimType, person.Email),
+                    new Claim(ClaimsIdentity.DefaultRoleClaimType, "employee")
+                    };
+                }
+                
+                ClaimsIdentity claimsIdentity =
+                new ClaimsIdentity(claims, "Token", ClaimsIdentity.DefaultNameClaimType,
+                    ClaimsIdentity.DefaultRoleClaimType);
+                return claimsIdentity;
+            }
+            // если пользователя не найдено
+            return null;
         }
 
         //create new user

@@ -2,12 +2,15 @@
 <html>
 <head>
     <title>Tasks</title>
-    <link rel="stylesheet" type="text/css" href="../styles/projects.css">
+    <link rel="stylesheet" type="text/css" href="../styles/tasks.css">
 </head>
 <body>
 <header>
-    <img src="/pictures/logo.png" alt="logo" width="60px" height="60px">
-    <h1>ProjectMS</h1>
+    <div class="logo">
+        <img src="/pictures/logo.png" alt="logo" width="60px" height="60px">
+        <h1>ProjectMS</h1>
+    </div>
+    <button>Log out</button>
 </header>
 <main>
     <aside>
@@ -15,25 +18,18 @@
         <button onclick="openProjects()">Projects</button>
         <button onclick="addProject()">Add Project</button>
         <button onclick="addTask()">Add Task</button>
+        <button>Tasks</button>
     </aside>
     <section>
         <table>
-            <caption><b>Projects</b></caption>
+            <caption><b>Tasks</b></caption>
             <thead>
             <tr>
-                <th>Name</th> <th>Manager</th> <th>Status</th> <th>StartDate</th> <th>EndDate</th> <th>Member's</th>
+                <th>Name</th> <th>Manager</th> <th>Status</th> <th>StartDate</th> <th>EndDate</th> <th>Project</th>
             </tr>
             </thead>
-            <tbody>
-            <tr>
-                <td></td> <td></td> <td></td> <td></td> <td></td> <td></td>
-            </tr>
-            <tr>
-                <td></td> <td></td> <td></td> <td></td> <td></td> <td></td>
-            </tr>
-            <tr>
-                <td></td> <td></td> <td></td> <td></td> <td></td> <td></td>
-            </tr>
+            <tbody id="projects">
+
             </tbody>
 
         </table>
@@ -43,6 +39,12 @@
 <footer>
     <p>Powered by &copy; ChatGPT</p>
 </footer>
-<script src="../scripts/projects.js"></script>
+<script>
+    window.history.forward();
+    function noBack() {
+        window.history.forward();
+    }
+</script>
+<script src="../scripts/tasks.js"></script>
 </body>
 </html>

@@ -6,7 +6,7 @@ namespace ProjectManagementSystem.Entity
     {
         public DbSet<AppUser> Users { get; set; }
         public DbSet<Project> Projects { get; set; }
-        public DbSet<Task> Tasks { get; set; }
+        public DbSet<PrTask> Tasks { get; set; }
         public DbSet<ProjectUser> ProjectUsers { get; set; }
         public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options)
         {
@@ -18,13 +18,13 @@ namespace ProjectManagementSystem.Entity
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Task>()
+            modelBuilder.Entity<PrTask>()
             .HasOne(p => p.UserManager)
             .WithMany(p => p.TaskManager)
             .HasForeignKey(p => p.Manager)
             .OnDelete(DeleteBehavior.NoAction);
 
-            modelBuilder.Entity<Task>()
+            modelBuilder.Entity<PrTask>()
             .HasOne(p => p.User)
             .WithMany(p => p.TaskUser)
             .HasForeignKey(p => p.UserId)

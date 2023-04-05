@@ -1,20 +1,24 @@
 async function authentificate(){
-    let userEmail=document.getElementById("emailInput").value;
-    let userpassword=document.getElementById("passwordInput").value;
-    let data=
-        {
-            "email": `${userEmail}`,
-            "password": `${userpassword}`
-        }
+
     try{
-        const response= await fetch("https://localhost:44345/api/auth/Authent",{
+        let userEmail=document.getElementById("emailInput").value;
+        let userpassword=document.getElementById("passwordInput").value;
+        let data=
+            {
+                "Email": `${userEmail}`,
+                "Password": `${userpassword}`
+            }
+        const response= await fetch("https://localhost:44345/api/auth/Token",{
             method:"POST",
             headers:{
                 "Content-Type":"application/json"
             },
             body: JSON.stringify(data)
         });
+        const data2 = await response.json();
         if(response.ok){
+            localStorage.setItem("tokenKey", JSON.stringify(data2));
+            console.log(data2);
             window.location.href="welcome.html"
         }
         else{

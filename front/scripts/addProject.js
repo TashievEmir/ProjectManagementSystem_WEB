@@ -1,6 +1,5 @@
 window.onload = () => {
     let members = document.getElementById("members");
-    debugger
     fetch('https://localhost:44345/api/adding/get')
         .then(response => response.json())
         .then(users => {
@@ -8,7 +7,6 @@ window.onload = () => {
                 let member = document.createElement("option");
                 member.text = `${user.name}`
                 member.value = `${user.name}`
-                debugger
                 members.add(member);
             });
         })
@@ -21,8 +19,7 @@ window.onload = () => {
             users.forEach(user => {
                 let manager = document.createElement("option");
                 manager.text = `${user.name}`
-                manager.value = `${user.name}`
-                debugger
+                manager.value = `${user.id}`
                 managers.add(manager);
             });
         })
@@ -32,12 +29,15 @@ window.onload = () => {
 async function openProjects(){
     window.location.href="projects.html";
 }
-async function addProject(){
-    window.location.href="addProject.html";
 
-}
 async function addTask(){
-    window.location.href="addTask.html";
+    let roleuser=JSON.parse(window.localStorage.getItem('tokenKey')).role;
+    console.log(roleuser);
+    if(roleuser=="employee"){
+        alert("you don't have permission");
+    }
+    else
+        window.location.href="addTask.html";
 }
 async function Save(){
     let data = {
@@ -52,10 +52,16 @@ async function Save(){
         method:"POST",
         headers:{"Content-Type":"application/json"},
         body: JSON.stringify(data)
+    }).catch(function (erro) {
+        console.log(erro);
     });
     if(response.ok){alert("The project has saved succesfully");}
     else alert("something went wrong, please try again")
 }
 async function LogOut(){
+    window.localStorage.removeItem("tokenKey");
     window.location.href="authentification.html"
+}
+async function openTasks(){
+    window.location.href="tasks.html";
 }

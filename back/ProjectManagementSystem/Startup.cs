@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using ProjectManagementSystem.Entity;
+using ProjectManagementSystem.Token;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -70,22 +71,14 @@ namespace ProjectManagementSystem
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseCors("AllowAll");
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
-            app.UseCors("AllowAll");
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
-        }
-        public class AuthOptions
-        {
-            public const string ISSUER = "MyAuthServer"; // издатель токена
-            public const string AUDIENCE = "MyAuthClient"; // потребитель токена
-            const string KEY = "mysupersecret_secretkey!123";   // ключ для шифрации
-            public static SymmetricSecurityKey GetSymmetricSecurityKey() =>
-                new SymmetricSecurityKey(Encoding.UTF8.GetBytes(KEY));
         }
     }
 }

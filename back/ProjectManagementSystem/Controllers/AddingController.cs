@@ -42,7 +42,7 @@ namespace ProjectManagementSystem.Controllers
         [HttpPost]
         public async Task<ActionResult<IEnumerable<AppUser>>> SaveProject(ProjectVM obj)
         {
-            var project = _mapper.Map<Project>(obj);
+            Project project = _mapper.Map<Project>(obj);
             //var projectUser = _mapper.Map<ProjectUser>(obj);
             await db.Projects.AddAsync(project);
             //await db.ProjectUsers.AddAsync(projectUser);

@@ -20,7 +20,7 @@ namespace ProjectManagementSystem.ViewModels
         [SourceMember(nameof(Project.EndDate))]
         public DateTime EndDate { get; set; }
 
-        [SourceMember(nameof(AppUser.Id))]
+        [SourceMember(nameof(Project.Manager))]
         public int Manager { get; set; }
 
         /*[SourceMember(nameof(ProjectUser.UserId))]

@@ -11,8 +11,8 @@ namespace ProjectManagementSystem.Entity
         public short Role { get; set; }
         public string Email { get; set; }
         public ICollection<Project> Projects { get; set; }
-        public ICollection<Task> TaskManager { get; set; }
-        public ICollection<Task> TaskUser { get; set; }
+        public ICollection<PrTask> TaskManager { get; set; }
+        public ICollection<PrTask> TaskUser { get; set; }
         public ICollection<ProjectUser> ProjectUsers { get; set; }
 
     }

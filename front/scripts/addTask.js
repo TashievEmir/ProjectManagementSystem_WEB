@@ -7,3 +7,6 @@ async function addProject(){
 async function addTask(){
     window.location.href="addTask.html";
 }
+async function openTasks(){
+    window.location.href="tasks.html";
+}

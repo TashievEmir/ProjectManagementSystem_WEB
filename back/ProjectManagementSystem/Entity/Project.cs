@@ -16,6 +16,6 @@ namespace ProjectManagementSystem.Entity
         public int Manager { get; set; }
         public AppUser User { get; set; }
         public ICollection<ProjectUser> ProjectUsers { get; set; }
-        public ICollection<Task> Tasks { get; set; }
+        public ICollection<PrTask> Tasks { get; set; }
     }
 }
