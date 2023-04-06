@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using ProjectManagementSystem.Entity;
+using ProjectManagementSystem.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -66,16 +67,30 @@ namespace ProjectManagementSystem.Controllers
 
         //get user's tasks 
         [HttpGet("{email}")]
-        public async Task<ActionResult<List<PrTask>>> GetTasks(string email)
+        public async Task<ActionResult<List<GetTasksVM>>> GetTasks(string email)
         {
             List<PrTask> AllProjects = new List<PrTask>();
             var userId = await db.Users.FirstOrDefaultAsync(x => x.Email == email);
 
             if (userId == null) return NotFound();
 
-            var temp = await db.Tasks.Where(x => x.UserId == userId.Id).ToListAsync();
-            AllProjects.AddRange(temp);
-            return AllProjects;
+            var tasks = await db.Tasks.Where(x => x.UserId == userId.Id).ToListAsync();
+            List<GetTasksVM> tasksList=new List<GetTasksVM>();
+            foreach (var item in tasks)
+            {
+                GetTasksVM tasksvm = new GetTasksVM()
+                {
+                    Name=item.Name,
+                    Manager=item.Manager,
+                    Status=item.Status,
+                    StartDate=item.StartDate.Date.ToString("yyyy-MM-dd"),
+                    EndDate=item.EndDate.Date.ToString("yyyy-MM-dd"),
+                    UserId=item.UserId,
+                    ProjectId=item.ProjectId
+                };
+                tasksList.Add(tasksvm);
+            }
+            return tasksList;
         }
 
     }

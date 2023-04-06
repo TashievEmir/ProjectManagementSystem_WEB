@@ -18,27 +18,33 @@
         <button onclick="openProjects()">Projects</button>
         <button onclick="addProject()">Add Project</button>
         <button onclick="addTask()">Add Task</button>
-        <button onclick="openTasks()">Tasks</button>
     </aside>
     <section>
-        <h3>For creatinga a new project please fill all blankets!</h3>
+        <h3>For creatinga a new task please fill all blankets!</h3>
         <table>
             <tr>
-                <td><p>Task's name: </p> <input></td>
-                <td><p>Task's start date: </p> <input type="date"></td>
-            </tr>
-            <tr>
-                <td><p>Task's manager: </p> <input> </td>
-                <td><p>Task's end date: </p> <input type="date"></td>
-            </tr>
-            <tr>
-                <td><p>Task's executor: </p> <select>
-                    <option value="1">Emir</option>
-                    <option value="2">User</option>
-                    <option value="3">somebody</option>
-                </select> </td>
+                <td><p>Task's name: </p> <input id="name">
+                </td>
+                <td><p>Task's start date: </p> <input id="startdate" type="date">
+                </td>
                 <td>
-                    <button>Save</button>
+                    <button onclick="Save()">Save</button>
+                </td>
+            </tr>
+            <tr>
+                <td><p>Task's manager: </p> <select id="managers">
+                                            </select>
+                </td>
+                <td><p>Task's end date: </p> <input id="enddate" type="date">
+                </td>
+            </tr>
+            <tr>
+                <td><p>Task's executor: </p> <select id="members">
+                                            </select>
+                </td>
+                <td>
+                    <p>Task's project: </p> <select id="projects">
+                                            </select>
                 </td>
             </tr>
         </table>

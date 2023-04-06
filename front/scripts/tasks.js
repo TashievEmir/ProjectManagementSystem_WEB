@@ -7,27 +7,21 @@ window.onload=()=>{
                 let tr = document.createElement("tr");
                 let taskName = document.createElement("td");
                 taskName.textContent = `${pr.name}`
-                //projectName.value = `${pr.id}`
                 tr.appendChild(taskName)
                 let taskManager = document.createElement("td");
                 taskManager.textContent = `${pr.manager}`
-                //projectManager.value = `${pr.manager}`
                 tr.appendChild(taskManager)
                 let taskStatus = document.createElement("td");
                 taskStatus.textContent = `${pr.status}`
-                //projectStatus.value = `${pr.status}`
                 tr.appendChild(taskStatus)
                 let taskStartDate = document.createElement("td");
                 taskStartDate.textContent = `${pr.startdate}`
-                //projectStartDate.value = `${pr.startdate}`
                 tr.appendChild(taskStartDate)
                 let taskEndDate = document.createElement("td");
                 taskEndDate.textContent = `${pr.enddate}`
-                //projectEndDate.value = `${pr.enddate}`
                 tr.appendChild(taskEndDate)
                 let taskProject = document.createElement("td");
-                taskProject.textContent = `${pr.enddate}`
-                //projectEndDate.value = `${pr.enddate}`
+                taskProject.textContent = `${pr.projectId}`
                 tr.appendChild(taskProject)
                 debugger
                 tasks.appendChild(tr);

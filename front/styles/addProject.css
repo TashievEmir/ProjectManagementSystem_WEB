@@ -43,8 +43,8 @@ main {
     flex-direction: row;
     height: 100%;
     justify-content: space-between;
-    margin-top: 0.5%;
-    margin-bottom: 10%;
+    /*margin-bottom: 10%;*/
+    overflow: scroll;
 }
 section {
     margin-left: 5%;
@@ -65,9 +65,11 @@ table button{
     border-style: solid;
     border-color: #1e0000;
 }
-
-select{
-
+.tdSave{
+    margin-left: 2%;
+}
+#startdate, #enddate{
+    width: 70%;
 }
 aside {
     background: #C9A66B;

@@ -26,27 +26,28 @@
             <tr>
                 <td><p>Project's name: </p> <input id="name"></td>
                 <td><p>Project's start date: </p> <input id="startdate" type="date"></td>
+                <td class="tdSave">
+                    <button onclick="Save()">Save</button>
+                </td>
             </tr>
             <tr>
                 <td><p>Project's manager: </p> <select id="managers">
                                                 </select>
                 </td>
-                <td><p>Project's end date: </p> <input id="enddate" type="date"></td>
+                <td><p>Project's end date: </p> <input id="enddate" type="date">
+                </td>
             </tr>
             <tr>
-                <td> <p>Project's status: </p> <select id="status">
+                <td> <p>Project's status: </p> <select multiple id="status">
                                                     <option value="1">not started</option>
                                                     <option value="2">in process</option>
                                                     <option value="3">finished</option>
                                                 </select>
                 </td>
-                <td> <p>Project's members: </p> <select id="members">
+                <td> <p>Project's members: </p> <select id="members" multiple>
 
                                                 </select>
                 </td>
-            </tr>
-            <tr>
-                <button onclick="Save()">Save</button>
             </tr>
         </table>
     </section>

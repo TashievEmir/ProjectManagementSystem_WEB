@@ -38,6 +38,14 @@ namespace ProjectManagementSystem.Controllers
             return managers;
         }
 
+        //get all projects
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Project>>> GetProjects()
+        {
+            var projects = await db.Projects.ToListAsync();
+            return projects;
+        }
+
         //save the data about new project
         [HttpPost]
         public async Task<ActionResult<IEnumerable<AppUser>>> SaveProject(ProjectVM obj)
@@ -46,6 +54,16 @@ namespace ProjectManagementSystem.Controllers
             //var projectUser = _mapper.Map<ProjectUser>(obj);
             await db.Projects.AddAsync(project);
             //await db.ProjectUsers.AddAsync(projectUser);
+            await db.SaveChangesAsync();
+            return Ok();
+        }
+
+        //save the data about new task
+        [HttpPost]
+        public async Task<ActionResult<IEnumerable<AppUser>>> SaveTask(PrTaskVM obj)
+        {
+            PrTask task = _mapper.Map<PrTask>(obj);
+            await db.Tasks.AddAsync(task);
             await db.SaveChangesAsync();
             return Ok();
         }
