@@ -18,8 +18,4 @@
     <PackageReference Include="MimeKit" Version="3.6.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Enums\" />
-  </ItemGroup>
-
 </Project>

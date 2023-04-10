@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using ProjectManagementSystem.Entity;
 using ProjectManagementSystem.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -48,13 +49,32 @@ namespace ProjectManagementSystem.Controllers
 
         //save the data about new project
         [HttpPost]
-        public async Task<ActionResult<IEnumerable<AppUser>>> SaveProject(ProjectVM obj)
+        public async Task<ActionResult<IEnumerable<AppUser>>> SaveProject( ProjectVM obj)
         {
-            Project project = _mapper.Map<Project>(obj);
+            /*Project project = _mapper.Map<Project>(obj);
             //var projectUser = _mapper.Map<ProjectUser>(obj);
-            await db.Projects.AddAsync(project);
-            //await db.ProjectUsers.AddAsync(projectUser);
-            await db.SaveChangesAsync();
+            await db.Projects.AddAsync(project);          
+            await db.SaveChangesAsync();*/
+                var projectId = db.Projects.FirstOrDefaultAsync(x => x.Name == obj.Name);
+                foreach (var item in obj.Members)
+                {
+                    ProjectUser projectUser = new ProjectUser()
+                    {
+                        ProjectId = projectId.Id,
+                        UserId = item
+                    };
+                    try
+                    {
+                        await db.ProjectUsers.AddAsync(projectUser);
+                        await db.SaveChangesAsync();
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e);
+                    }
+
+                }
+            
             return Ok();
         }
 
@@ -67,6 +87,5 @@ namespace ProjectManagementSystem.Controllers
             await db.SaveChangesAsync();
             return Ok();
         }
-
     }
 }

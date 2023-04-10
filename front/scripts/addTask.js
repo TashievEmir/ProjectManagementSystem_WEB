@@ -44,13 +44,14 @@ async function openProjects(){
 async function addProject(){
     window.location.href="addProject.html";
 }
-async function addTask(){
-    window.location.href="addTask.html";
+async function openTasks(){
+    window.location.href="tasks.html";
 }
 async function Save(){
     let data = {
         "name":`${document.getElementById("name").value}`,
         "manager":`${document.getElementById("managers").value}`,
+        "status":`1`,
         "startdate":`${document.getElementById("startdate").value}`,
         "enddate":`${document.getElementById("enddate").value}`,
         "userid":`${document.getElementById("members").value}`,

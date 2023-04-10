@@ -1,7 +1,10 @@
 ﻿using AutoMapper;
 using AutoMapper.Configuration.Annotations;
+using Microsoft.AspNetCore.Mvc;
 using ProjectManagementSystem.Entity;
 using System;
+using System.Collections.Generic;
+using System.Xml.Linq;
 
 namespace ProjectManagementSystem.ViewModels
 {
@@ -15,18 +18,14 @@ namespace ProjectManagementSystem.ViewModels
         public string Status { get; set; }
 
         [SourceMember(nameof(Project.StartDate))]
-        public DateTime StartDate { get; set; }
+        public string StartDate { get; set; }
 
         [SourceMember(nameof(Project.EndDate))]
-        public DateTime EndDate { get; set; }
+        public string EndDate { get; set; }
 
         [SourceMember(nameof(Project.Manager))]
         public int Manager { get; set; }
 
-        /*[SourceMember(nameof(ProjectUser.UserId))]
-        public int UserId { get; set; }
-
-        [SourceMember(nameof(ProjectUser.ProjectId))]
-        public int ProjectId { get; set; }*/
+        public List<int> Members { get; set; }
     }
 }

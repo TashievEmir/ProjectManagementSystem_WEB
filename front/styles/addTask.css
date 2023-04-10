@@ -54,8 +54,8 @@ section {
     align-items: center;
 
 }
-section h3{
-
+#startdate, #enddate{
+    width: 70%;
 }
 table{
     padding-top: 0;
@@ -65,8 +65,8 @@ table button, table input, table select{
     border-style: solid;
     border-color: #1e0000;
 }
-select{
-
+.tdSave{
+    margin-left: 5%;
 }
 aside {
     background: #C9A66B;

@@ -1,9 +1,11 @@
 ﻿using ProjectManagementSystem.Entity;
+using System.Collections.Generic;
 using System;
+using static ProjectManagementSystem.Enums.Enum;
 
 namespace ProjectManagementSystem.ViewModels
 {
-    public class GetTasksVM
+    public class GetProjectsVM
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -11,7 +13,6 @@ namespace ProjectManagementSystem.ViewModels
         public string StartDate { get; set; }
         public string EndDate { get; set; }
         public int Manager { get; set; }
-        public int UserId { get; set; }
-        public int ProjectId { get; set; }
+        public List<AppUserVM> Members { get; set; }
     }
 }

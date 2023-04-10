@@ -6,7 +6,7 @@ window.onload = () => {
             users.forEach(user => {
                 let member = document.createElement("option");
                 member.text = `${user.name}`
-                member.value = `${user.name}`
+                member.value = `${user.id}`
                 members.add(member);
             });
         })
@@ -40,20 +40,43 @@ async function addTask(){
         window.location.href="addTask.html";
 }
 async function Save(){
-    let data = {
-            "name":`${document.getElementById("name").value}`,
-            "manager":`${document.getElementById("managers").value}`,
-            "startdate":`${document.getElementById("startdate").value}`,
-            "enddate":`${document.getElementById("enddate").value}`,
-            "status":`${document.getElementById("status").value}`,
-            "members":`${document.getElementById("members").value}`
+    /*let formData=new FormData();
+
+    formData.append("Name", document.getElementById("name").value);
+    formData.append("Manager", document.getElementById("managers").value);
+    formData.append("Startdate", document.getElementById("startdate").value);
+    formData.append("Enddate", document.getElementById("enddate").value);
+    formData.append("Status", document.getElementById("status").value);*/
+    let data={
+        "name":`${document.getElementById("name").value}`,
+        "manager":`${document.getElementById("managers").value}`,
+        "status":`${document.getElementById("status").value}`,
+        "startdate":`${document.getElementById("startdate").value}`,
+        "enddate":`${document.getElementById("enddate").value}`
     }
+    const selectElement = document.getElementById("members");
+    /*selectElement.addEventListener("change", () => {
+        const selectedOptions = selectElement.selectedOptions;
+        for (let i = 0; i < selectedOptions.length; i++) {
+            formData.append(`members`, selectedOptions[i].value);
+        }
+    })*/
+    const selectedOptions = selectElement.selectedOptions;
+    const selectedValues = [];
+    for (let i = 0; i < selectedOptions.length; i++) {
+        selectedValues.push(selectedOptions[i].value);
+    }
+    const newData = {
+        ...data,
+        members: selectedValues.length ? selectedValues : null,
+    };
+    debugger
     const response= await fetch(`https://localhost:44345/api/adding/saveproject`,{
         method:"POST",
-        headers:{"Content-Type":"application/json"},
-        body: JSON.stringify(data)
-    }).catch(function (erro) {
-        console.log(erro);
+        headers:{"Content-Type": "application/json"},
+        body: JSON.stringify(newData)
+    }).catch(function (error) {
+        console.log(error);
     });
     if(response.ok){alert("The project has saved succesfully");}
     else alert("something went wrong, please try again")

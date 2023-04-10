@@ -43,9 +43,10 @@ main {
     flex-direction: row;
     height: 100%;
     justify-content: space-between;
-    padding: 20px;
+    padding: 5px;
     margin-top: 0.5%;
     margin-bottom: 10%;
+    overflow: auto;
 }
 section {
     margin-left: 5%;
@@ -53,11 +54,14 @@ section {
     margin-bottom: 40px;
     justify-content: center;
     align-items: center;
+    max-height: 95%;
+    overflow-y: auto;
 }
 table {
     border-collapse: collapse;
     width: 100%;
     margin-bottom: 1rem;
+    height: auto;
 }
 
 caption {
@@ -107,7 +111,7 @@ footer {
     width: 100%;
     padding: 20px;
     text-align: center;
-    position: absolute;
+    position: fixed;
     bottom: 0;
 }
 footer p{

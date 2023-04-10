@@ -68,6 +68,9 @@ table button{
 .tdSave{
     margin-left: 2%;
 }
+#members{
+    width: 40%;
+}
 #startdate, #enddate{
     width: 70%;
 }

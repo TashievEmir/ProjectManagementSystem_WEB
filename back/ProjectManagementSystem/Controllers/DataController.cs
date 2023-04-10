@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
+using Newtonsoft.Json;
+using Org.BouncyCastle.Math.EC.Rfc7748;
 using ProjectManagementSystem.Entity;
 using ProjectManagementSystem.ViewModels;
 using System;
@@ -10,6 +12,7 @@ using System.Linq;
 using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using static ProjectManagementSystem.Enums.Enum;
 
 namespace ProjectManagementSystem.Controllers
 {
@@ -26,43 +29,98 @@ namespace ProjectManagementSystem.Controllers
             _mapper = mapper;
         }
 
+        //get projects where current user as manager
         [HttpGet("{email}")]
-        public async Task<ActionResult<List<Project>>> GetProjectsAsManager(string email)
+        public async Task<ActionResult<List<GetProjectsVM>>> GetProjectsAsManager(string email)
         {
-                var userId = await db.Users.FirstOrDefaultAsync(x => x.Email == email);
-                
+            var userId = await db.Users.FirstOrDefaultAsync(x => x.Email == email);         
             if (userId == null) return NotFound();
 
-                var temp = await db.Projects.Where(x => x.Manager == userId.Id).ToListAsync();
-                return temp;
-        }
+            var projects = await db.Projects.Where(x => x.Manager == userId.Id).ToListAsync();
+            List<GetProjectsVM> projectsList=new List<GetProjectsVM>();
 
-        [HttpGet("{email}")]
-        public async Task<ActionResult<List<Project>>> GetProjectsAsEmployee(string email)
-        {
-            using (var dbc = db)
+            List<AppUserVM> memberlist = new List<AppUserVM>();
+            foreach (var item in projects)
             {
-                List<Project> AllProjects = new List<Project>();
-                var userId = await dbc.Users.FirstOrDefaultAsync(x => x.Email == email);
-                var projectIds = await dbc.ProjectUsers.Where(x => x.UserId == userId.Id).Select(x => x.ProjectId).ToListAsync();
-                foreach (var projectId in projectIds)
+                var members = await db.ProjectUsers.Where(x => x.ProjectId == item.Id).Select(x => x.UserId).ToListAsync();
+                foreach (var user in members)
                 {
-                    try
+                    var member = await db.Users.Where(x => x.Id == user).ToListAsync();
+                    memberlist.Clear();
+                    foreach (var x in member)
                     {
-                        var project =await dbc.Projects.Where(x => x.Id == projectId).ToListAsync();
-                        if (project != null)
+                        AppUserVM uservm = new AppUserVM
                         {
-                            AllProjects.AddRange(project);
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        Console.WriteLine(e);
+                            Id = x.Id,
+                            Name = x.Name
+                        };
+                        memberlist.Add(uservm);
                     }
                 }
-                return AllProjects;
+                int enumNum = Convert.ToInt32(item.Status);
+                GetProjectsVM vm = new GetProjectsVM()
+                {
+                    Name = item.Name,
+                    Manager = item.Manager,
+                    Status =Enum.GetName(typeof(EnumStatus), enumNum),
+                    StartDate = item.StartDate.Date.ToString("yyyy-MM-dd"),
+                    EndDate = item.EndDate.Date.ToString("yyyy-MM-dd"),
+                    Members=memberlist
+                };
+                projectsList.Add(vm);
             }
+            return projectsList;
+        }
 
+        //get projects where current user as employee
+        [HttpGet("{email}")]
+        public async Task<ActionResult<List<GetProjectsVM>>> GetProjectsAsEmployee(string email)
+        {
+            List<Project> AllProjects = new List<Project>();
+            
+            List<GetProjectsVM> projectList = new List<GetProjectsVM>();
+            var userId = await db.Users.FirstOrDefaultAsync(x => x.Email == email);
+            var projectIds = await db.ProjectUsers.Where(x => x.UserId == userId.Id).Select(x => x.ProjectId).ToListAsync();
+            foreach (var projectId in projectIds)
+            {
+                List<AppUserVM> memberlist = new List<AppUserVM>();
+                var project = await db.Projects.Where(x => x.Id == projectId).ToListAsync();
+                /*if (project != null)
+                {
+                    AllProjects.AddRange(project);
+                }*/
+                var members = await db.ProjectUsers.Where(x => x.ProjectId == projectId).Select(x => x.UserId).ToListAsync();
+                //memberlist.Clear();
+                foreach (var item in members)
+                    {
+                        var member = await db.Users.Where(x => x.Id == item).ToListAsync();
+                        foreach(var x in member)
+                        {
+                            AppUserVM uservm = new AppUserVM()
+                            {
+                                Id=x.Id,
+                                Name=x.Name
+                            };
+                        memberlist.Add(uservm);
+                        }                       
+                    }
+                foreach (var item in project)
+                {
+                    int enumNum = Convert.ToInt32(item.Status);
+                    GetProjectsVM vm = new GetProjectsVM()
+                    {
+                        Name = item.Name,
+                        Manager = item.Manager,
+                        Status = Enum.GetName(typeof(EnumStatus), enumNum),
+                        StartDate = item.StartDate.Date.ToString("yyyy-MM-dd"),
+                        EndDate = item.EndDate.Date.ToString("yyyy-MM-dd"),
+                        Members = memberlist
+                    };
+                    projectList.Add(vm);
+                }
+                
+            }
+            return projectList;
         }
 
         //get user's tasks 
@@ -78,12 +136,13 @@ namespace ProjectManagementSystem.Controllers
             List<GetTasksVM> tasksList=new List<GetTasksVM>();
             foreach (var item in tasks)
             {
+                int enumNum = Convert.ToInt32(item.Status);
                 GetTasksVM tasksvm = new GetTasksVM()
                 {
                     Name=item.Name,
                     Manager=item.Manager,
-                    Status=item.Status,
-                    StartDate=item.StartDate.Date.ToString("yyyy-MM-dd"),
+                    Status= Enum.GetName(typeof(EnumStatus), enumNum),
+                    StartDate =item.StartDate.Date.ToString("yyyy-MM-dd"),
                     EndDate=item.EndDate.Date.ToString("yyyy-MM-dd"),
                     UserId=item.UserId,
                     ProjectId=item.ProjectId
