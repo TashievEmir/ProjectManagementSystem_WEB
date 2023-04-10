@@ -20,8 +20,10 @@
         <button onclick="openTasks()">Tasks</button>
     </aside>
     <section>
-        <h3>For creatinga a new project please fill all blankets!</h3>
+
         <table>
+            <caption>For creatinga a new project please fill all blankets!</caption>
+            <tbody>
             <tr>
                 <td><p>Project's name: </p> <input id="name"></td>
                 <td><p>Project's start date: </p> <input id="startdate" type="date"></td>
@@ -31,23 +33,25 @@
             </tr>
             <tr>
                 <td><p>Project's manager: </p> <select id="managers">
-                                                </select>
+                </select>
                 </td>
                 <td><p>Project's end date: </p> <input id="enddate" type="date">
                 </td>
             </tr>
             <tr>
                 <td> <p>Project's status: </p> <select id="status" size="1">
-                                                    <option value="1">not started</option>
-                                                    <option value="2">in process</option>
-                                                    <option value="3">finished</option>
-                                                </select>
+                    <option value="1">not started</option>
+                    <option value="2">in process</option>
+                    <option value="3">finished</option>
+                </select>
                 </td>
-                <td> <p>Project's members: </p> <select id="members" multiple size="2">
+                <td> <p>Project's members: </p> <select id="members" multiple >
 
-                                                </select>
+                </select>
                 </td>
             </tr>
+            </tbody>
+
         </table>
     </section>
 

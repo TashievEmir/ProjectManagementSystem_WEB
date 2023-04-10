@@ -66,6 +66,7 @@ async function Save(){
     for (let i = 0; i < selectedOptions.length; i++) {
         selectedValues.push(selectedOptions[i].value);
     }
+    selectedValues.push(data.manager);
     const newData = {
         ...data,
         members: selectedValues.length ? selectedValues : null,
@@ -78,7 +79,12 @@ async function Save(){
     }).catch(function (error) {
         console.log(error);
     });
-    if(response.ok){alert("The project has saved succesfully");}
+    if(response.ok){
+        alert("The project has saved succesfully");
+        document.getElementById("name").textContent="";
+        document.getElementById("startdate").textContent="";
+        document.getElementById("enddate").textContent="";
+    }
     else alert("something went wrong, please try again")
 }
 async function LogOut(){

@@ -51,11 +51,13 @@ namespace ProjectManagementSystem.Controllers
         [HttpPost]
         public async Task<ActionResult<IEnumerable<AppUser>>> SaveProject( ProjectVM obj)
         {
-            /*Project project = _mapper.Map<Project>(obj);
-            //var projectUser = _mapper.Map<ProjectUser>(obj);
-            await db.Projects.AddAsync(project);          
-            await db.SaveChangesAsync();*/
-                var projectId = db.Projects.FirstOrDefaultAsync(x => x.Name == obj.Name);
+            //adding project
+            Project project = _mapper.Map<Project>(obj);
+            await db.Projects.AddAsync(project);
+            await db.SaveChangesAsync();
+
+            //adding members of project to the current project
+            var projectId = await db.Projects.FirstOrDefaultAsync(x => x.Name == obj.Name);
                 foreach (var item in obj.Members)
                 {
                     ProjectUser projectUser = new ProjectUser()
@@ -73,8 +75,7 @@ namespace ProjectManagementSystem.Controllers
                         Console.WriteLine(e);
                     }
 
-                }
-            
+                }          
             return Ok();
         }
 

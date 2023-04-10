@@ -29,55 +29,10 @@ namespace ProjectManagementSystem.Controllers
             _mapper = mapper;
         }
 
-        //get projects where current user as manager
-        [HttpGet("{email}")]
-        public async Task<ActionResult<List<GetProjectsVM>>> GetProjectsAsManager(string email)
-        {
-            var userId = await db.Users.FirstOrDefaultAsync(x => x.Email == email);         
-            if (userId == null) return NotFound();
-
-            var projects = await db.Projects.Where(x => x.Manager == userId.Id).ToListAsync();
-            List<GetProjectsVM> projectsList=new List<GetProjectsVM>();
-
-            List<AppUserVM> memberlist = new List<AppUserVM>();
-            foreach (var item in projects)
-            {
-                var members = await db.ProjectUsers.Where(x => x.ProjectId == item.Id).Select(x => x.UserId).ToListAsync();
-                foreach (var user in members)
-                {
-                    var member = await db.Users.Where(x => x.Id == user).ToListAsync();
-                    memberlist.Clear();
-                    foreach (var x in member)
-                    {
-                        AppUserVM uservm = new AppUserVM
-                        {
-                            Id = x.Id,
-                            Name = x.Name
-                        };
-                        memberlist.Add(uservm);
-                    }
-                }
-                int enumNum = Convert.ToInt32(item.Status);
-                GetProjectsVM vm = new GetProjectsVM()
-                {
-                    Name = item.Name,
-                    Manager = item.Manager,
-                    Status =Enum.GetName(typeof(EnumStatus), enumNum),
-                    StartDate = item.StartDate.Date.ToString("yyyy-MM-dd"),
-                    EndDate = item.EndDate.Date.ToString("yyyy-MM-dd"),
-                    Members=memberlist
-                };
-                projectsList.Add(vm);
-            }
-            return projectsList;
-        }
-
         //get projects where current user as employee
         [HttpGet("{email}")]
         public async Task<ActionResult<List<GetProjectsVM>>> GetProjectsAsEmployee(string email)
         {
-            List<Project> AllProjects = new List<Project>();
-            
             List<GetProjectsVM> projectList = new List<GetProjectsVM>();
             var userId = await db.Users.FirstOrDefaultAsync(x => x.Email == email);
             var projectIds = await db.ProjectUsers.Where(x => x.UserId == userId.Id).Select(x => x.ProjectId).ToListAsync();
@@ -85,12 +40,7 @@ namespace ProjectManagementSystem.Controllers
             {
                 List<AppUserVM> memberlist = new List<AppUserVM>();
                 var project = await db.Projects.Where(x => x.Id == projectId).ToListAsync();
-                /*if (project != null)
-                {
-                    AllProjects.AddRange(project);
-                }*/
                 var members = await db.ProjectUsers.Where(x => x.ProjectId == projectId).Select(x => x.UserId).ToListAsync();
-                //memberlist.Clear();
                 foreach (var item in members)
                     {
                         var member = await db.Users.Where(x => x.Id == item).ToListAsync();
@@ -117,8 +67,7 @@ namespace ProjectManagementSystem.Controllers
                         Members = memberlist
                     };
                     projectList.Add(vm);
-                }
-                
+                }              
             }
             return projectList;
         }
