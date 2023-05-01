@@ -58,6 +58,43 @@ window.onload=()=>{
                 deleteTd.appendChild(deleteBtn);
                 tr.appendChild(deleteTd);
 
+                if (pr.status == "finished") 
+                {
+                    tr.children[0].style.backgroundColor = 'aqua'; tr.children[1].style.backgroundColor = 'aqua';
+                    tr.children[2].style.backgroundColor = 'aqua'; tr.children[3].style.backgroundColor = 'aqua';
+                    tr.children[4].style.backgroundColor = 'aqua'; tr.children[5].style.backgroundColor = 'aqua';
+                    tr.children[6].style.backgroundColor = 'aqua'; tr.children[7].style.backgroundColor = 'aqua';
+                    tr.children[8].style.backgroundColor = 'aqua';
+                } 
+                else if (new Date(pr.endDate) < new Date()) 
+                {
+                    tr.children[0].style.backgroundColor = 'red'; tr.children[1].style.backgroundColor = 'red';
+                    tr.children[2].style.backgroundColor = 'red'; tr.children[3].style.backgroundColor = 'red';
+                    tr.children[4].style.backgroundColor = 'red'; tr.children[5].style.backgroundColor = 'red';
+                    tr.children[6].style.backgroundColor = 'red'; tr.children[7].style.backgroundColor = 'red';
+                    tr.children[8].style.backgroundColor = 'red';
+                } 
+                else if (new Date(pr.startDate) < new Date() && pr.status=="notStarted") 
+                {
+                    tr.children[0].style.backgroundColor = 'red'; tr.children[1].style.backgroundColor = 'red';
+                    tr.children[2].style.backgroundColor = 'red'; tr.children[3].style.backgroundColor = 'red';
+                    tr.children[4].style.backgroundColor = 'red'; tr.children[5].style.backgroundColor = 'red';
+                    tr.children[6].style.backgroundColor = 'red'; tr.children[7].style.backgroundColor = 'red';
+                    tr.children[8].style.backgroundColor = 'red';
+                }
+                else if(new Date(pr.startDate) < new Date() && new Date(pr.endDate) > new Date() )
+                {
+                    tr.children[0].style.backgroundColor = 'yellow'; tr.children[1].style.backgroundColor = 'yellow';
+                    tr.children[2].style.backgroundColor = 'yellow'; tr.children[3].style.backgroundColor = 'yellow';
+                    tr.children[4].style.backgroundColor = 'yellow'; tr.children[5].style.backgroundColor = 'yellow';
+                    tr.children[6].style.backgroundColor = 'yellow'; tr.children[7].style.backgroundColor = 'yellow';
+                    tr.children[8].style.backgroundColor = 'yellow';
+                }
+                else
+                {
+
+                }
+
                 tasks.appendChild(tr);
             });
         })

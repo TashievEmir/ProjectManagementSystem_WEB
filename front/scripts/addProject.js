@@ -60,7 +60,6 @@ async function Save(){
         ...data,
         members: selectedValues.length ? selectedValues : null,
     };
-    debugger
     const response= await fetch(`https://localhost:44345/api/adding/saveproject`,{
         method:"POST",
         headers:{"Content-Type": "application/json"},

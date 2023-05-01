@@ -7,16 +7,16 @@ window.onload=()=>{
                 let tr = document.createElement("tr");
                 
                 let projectId = document.createElement("td");
-                projectId.textContent = `${pr.id}`;
+                projectId.textContent = pr.id;
                 tr.appendChild(projectId);
 
                 let projectName = document.createElement("td");
-                projectName.textContent = `${pr.name}`
-                tr.appendChild(projectName)
+                projectName.textContent = pr.name;
+                tr.appendChild(projectName);
 
                 let projectManager = document.createElement("td");
-                projectManager.textContent = `${pr.manager}`
-                tr.appendChild(projectManager)
+                projectManager.textContent = pr.manager;
+                tr.appendChild(projectManager);
 
                 let projectStatus = document.createElement("td");
                 projectStatus.textContent = `${pr.status}`;
@@ -29,7 +29,7 @@ window.onload=()=>{
                 let projectStartDate = document.createElement("td");
                 projectStartDate.textContent = `${pr.startDate}`;
                 projectStartDate.addEventListener("click", function() {
-                    projectStatus.contentEditable = true;
+                    projectStartDate.contentEditable = true;
                   });
                 tr.appendChild(projectStartDate);
 
@@ -73,18 +73,55 @@ window.onload=()=>{
                 };
                 deleteTd.appendChild(deleteBtn);
                 tr.appendChild(deleteTd);
+                
+                if (pr.status == "finished") 
+                {
+                    tr.children[0].style.backgroundColor = 'aqua'; tr.children[1].style.backgroundColor = 'aqua';
+                    tr.children[2].style.backgroundColor = 'aqua'; tr.children[3].style.backgroundColor = 'aqua';
+                    tr.children[4].style.backgroundColor = 'aqua'; tr.children[5].style.backgroundColor = 'aqua';
+                    tr.children[6].style.backgroundColor = 'aqua'; tr.children[7].style.backgroundColor = 'aqua';
+                    tr.children[8].style.backgroundColor = 'aqua';
+                } 
+                else if (new Date(pr.endDate) < new Date()) 
+                {
+                    tr.children[0].style.backgroundColor = 'red'; tr.children[1].style.backgroundColor = 'red';
+                    tr.children[2].style.backgroundColor = 'red'; tr.children[3].style.backgroundColor = 'red';
+                    tr.children[4].style.backgroundColor = 'red'; tr.children[5].style.backgroundColor = 'red';
+                    tr.children[6].style.backgroundColor = 'red'; tr.children[7].style.backgroundColor = 'red';
+                    tr.children[8].style.backgroundColor = 'red';
+                } 
+                else if (new Date(pr.startDate) < new Date() && pr.status=="notStarted") 
+                {
+                    tr.children[0].style.backgroundColor = 'red'; tr.children[1].style.backgroundColor = 'red';
+                    tr.children[2].style.backgroundColor = 'red'; tr.children[3].style.backgroundColor = 'red';
+                    tr.children[4].style.backgroundColor = 'red'; tr.children[5].style.backgroundColor = 'red';
+                    tr.children[6].style.backgroundColor = 'red'; tr.children[7].style.backgroundColor = 'red';
+                    tr.children[8].style.backgroundColor = 'red';
+                }
+                else if(new Date(pr.startDate) < new Date() && new Date(pr.endDate) > new Date() )
+                {
+                    tr.children[0].style.backgroundColor = 'yellow'; tr.children[1].style.backgroundColor = 'yellow';
+                    tr.children[2].style.backgroundColor = 'yellow'; tr.children[3].style.backgroundColor = 'yellow';
+                    tr.children[4].style.backgroundColor = 'yellow'; tr.children[5].style.backgroundColor = 'yellow';
+                    tr.children[6].style.backgroundColor = 'yellow'; tr.children[7].style.backgroundColor = 'yellow';
+                    tr.children[8].style.backgroundColor = 'yellow';
+                }
+                else
+                {
 
+                }
                 projects.appendChild(tr);
             });
         })
         .catch(error => console.error(error));
 
 }
-document.onload=()=>{
+document.onload=()=>
+{
     var table = document.getElementById("projects");
     var rows = table.getElementsByTagName("tr");
     let currentDate = new Date().toJSON().slice(0, 10);
-    debugger
+
     for(let i = 1; i < rows.length; i++) {
         var statusValue = rows[i].cells[2].textContent;
         var startDate= rows[i].cells[3].textContent;
@@ -98,17 +135,19 @@ document.onload=()=>{
     }
 }
 setTimeout(function() {
-    console.log("set fuck")
+
     var table = document.getElementById("projects");
     var rows = table.getElementsByTagName("tr");
     let currentDate = new Date().toJSON().slice(0, 10);
     
-    for(let i = 0; i < rows.length; i++) {
+    for(let i = 0; i < rows.length; i++) 
+    {
         var statusValue = rows[i].cells[2].textContent;
         var startDate= rows[i].cells[3].textContent;
         var endDateValue = rows[i].cells[4].firstChild.nodeValue;
         
-        if (statusValue == 'notStarted' && startDate>currentDate) {
+        if (statusValue == 'notStarted' && startDate>currentDate) 
+        {
             rows[i].style.backgroundColor = "red";
         }
         else {
@@ -117,37 +156,45 @@ setTimeout(function() {
     }
 }, 2000);
 document.addEventListener('load', function() {
-    console.log("load fuck")
+    
     var table = document.getElementById("projects");
     var rows = table.getElementsByTagName("tr");
     let currentDate = new Date().toJSON().slice(0, 10);
-    debugger
-    for(let i = 1; i < rows.length; i++) {
+
+    for(let i = 1; i < rows.length; i++) 
+    {
         var statusValue = rows[i].cells[2].textContent;
         var startDate= rows[i].cells[3].textContent;
         var endDateValue = rows[i].cells[4].firstChild.nodeValue;
-        if (statusValue == 'notStarted' && startDate>currentDate) {
+
+        if (statusValue == 'notStarted' && startDate>currentDate) 
+        {
             rows[i].style.backgroundColor = "red";
         }
-        else {
+        else 
+        {
             rows[i].style.backgroundColor = "green";
         }
     }
 });
 
 async function addProject(){
+
     let roleuser=JSON.parse(window.localStorage.getItem('tokenKey')).role;
-    console.log(roleuser);
-    if(roleuser=="employee"){
+
+    if(roleuser=="employee")
+    {
         alert("you don't have permission");
     }
     else
         window.location.href="addProject.html";
 }
 async function addTask(){
+
     let roleuser=JSON.parse(window.localStorage.getItem('tokenKey')).role;
-    console.log(roleuser);
-    if(roleuser=="employee"){
+
+    if(roleuser=="employee")
+    {
         alert("you don't have permission");
     }
     else
@@ -166,13 +213,16 @@ myMap.set('notStarted', '1');
 myMap.set('inProcess', '2');
 myMap.set('finished', '3');
 
-async function Update(button){
+async function Update(button)
+{
     let roleuser=JSON.parse(window.localStorage.getItem('tokenKey')).role;
-    console.log(roleuser);
-    if(roleuser=="employee"){
+
+    if(roleuser=="employee")
+    {
         alert("you don't have permission");
     }
-    else{
+    else
+    {
         var row = button.parentNode.parentNode;
         var cells = row.getElementsByTagName("td");
         var rowData = [];
