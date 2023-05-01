@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using Microsoft.Extensions.Caching.Memory;
 using Newtonsoft.Json;
 using Org.BouncyCastle.Math.EC.Rfc7748;
@@ -29,9 +30,9 @@ namespace ProjectManagementSystem.Controllers
             _mapper = mapper;
         }
 
-        //get projects where current user as employee
+        //get projects with current user
         [HttpGet("{email}")]
-        public async Task<ActionResult<List<GetProjectsVM>>> GetProjectsAsEmployee(string email)
+        public async Task<ActionResult<List<GetProjectsVM>>> GetProjects(string email)
         {
             List<GetProjectsVM> projectList = new List<GetProjectsVM>();
             var userId = await db.Users.FirstOrDefaultAsync(x => x.Email == email);
@@ -56,11 +57,13 @@ namespace ProjectManagementSystem.Controllers
                     }
                 foreach (var item in project)
                 {
+                    var managerName = await db.Users.FirstOrDefaultAsync(x => x.Id == item.Manager);
                     int enumNum = Convert.ToInt32(item.Status);
                     GetProjectsVM vm = new GetProjectsVM()
                     {
+                        Id=item.Id,
                         Name = item.Name,
-                        Manager = item.Manager,
+                        Manager = managerName.Name,
                         Status = Enum.GetName(typeof(EnumStatus), enumNum),
                         StartDate = item.StartDate.Date.ToString("yyyy-MM-dd"),
                         EndDate = item.EndDate.Date.ToString("yyyy-MM-dd"),
@@ -76,20 +79,23 @@ namespace ProjectManagementSystem.Controllers
         [HttpGet("{email}")]
         public async Task<ActionResult<List<GetTasksVM>>> GetTasks(string email)
         {
-            List<PrTask> AllProjects = new List<PrTask>();
             var userId = await db.Users.FirstOrDefaultAsync(x => x.Email == email);
 
             if (userId == null) return NotFound();
 
             var tasks = await db.Tasks.Where(x => x.UserId == userId.Id).ToListAsync();
+
             List<GetTasksVM> tasksList=new List<GetTasksVM>();
+
             foreach (var item in tasks)
             {
+                var managerName = await db.Users.FirstOrDefaultAsync(x => x.Id == item.Manager);
                 int enumNum = Convert.ToInt32(item.Status);
                 GetTasksVM tasksvm = new GetTasksVM()
                 {
+                    Id = item.Id,
                     Name=item.Name,
-                    Manager=item.Manager,
+                    Manager=managerName.Name,
                     Status= Enum.GetName(typeof(EnumStatus), enumNum),
                     StartDate =item.StartDate.Date.ToString("yyyy-MM-dd"),
                     EndDate=item.EndDate.Date.ToString("yyyy-MM-dd"),
@@ -101,6 +107,110 @@ namespace ProjectManagementSystem.Controllers
             return tasksList;
         }
 
+        [HttpPut]
+        public async Task<ActionResult<Project>> UpdateProject([FromBody]ProjectVM projectvm)
+        {
+            if (!db.Projects.Any(x => x.Id == projectvm.Id))
+            {
+                return NotFound();
+            }
+            Project project = _mapper.Map<Project>(projectvm);
+            try
+            {
+                db.Update(project);
+                await db.SaveChangesAsync();
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            return Ok();
+        }
+
+        [HttpGet("{name}")]
+        public async Task<ActionResult<AppUser>> GetUserId(string name)
+        {
+            var user = await db.Users.FirstOrDefaultAsync(x => x.Name == name);
+            if (user==null) return NotFound();
+            return Ok(user);
+        }
+
+        [HttpGet("{email}")]
+        public async Task<ActionResult<AppUser>> GetUserByEmail(string email)
+        {
+            var user = await db.Users.FirstOrDefaultAsync(x => x.Email == email);
+
+            if (user == null) return NotFound();
+            return Ok(user);
+        }
+
+        [HttpPut]
+        public async Task<ActionResult<PrTask>> UpdateTask([FromBody] PrTaskVM taskvm)
+        {
+            if (!db.Tasks.Any(x => x.Id == taskvm.Id))
+            {
+                return NotFound();
+            }
+            PrTask task = _mapper.Map<PrTask>(taskvm);
+            try
+            {
+                db.Update(task);
+                await db.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            return Ok();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteProject(int id)
+        {
+            var project = db.Projects.FirstOrDefault(x => x.Id == id);
+            var projectUsers = db.ProjectUsers.Where(x => x.ProjectId == id);
+            if (project == null || projectUsers==null)
+            {
+                return NotFound();
+            }
+            try
+            {
+                foreach (var item in projectUsers)
+                {
+                    db.ProjectUsers.Remove(item);
+                }
+                await db.SaveChangesAsync();
+
+                db.Projects.Remove(project);
+                await db.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+
+            return Ok();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteTask(int id)
+        {
+            PrTask task = db.Tasks.FirstOrDefault(x => x.Id == id);
+            if (task == null)
+            {
+                return NotFound();
+            }
+            try
+            {
+                db.Tasks.Remove(task);
+                await db.SaveChangesAsync();
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            return Ok();
+        }
     }
 }
 

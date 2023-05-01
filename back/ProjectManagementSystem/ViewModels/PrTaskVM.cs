@@ -8,6 +8,9 @@ namespace ProjectManagementSystem.ViewModels
     [AutoMap(typeof(PrTask), ReverseMap = true)]
     public class PrTaskVM
     {
+        [SourceMember(nameof(PrTask.Id))]
+        public int Id { get; set; }
+
         [SourceMember(nameof(PrTask.Name))]
         public string Name { get; set; }
 
@@ -15,10 +18,10 @@ namespace ProjectManagementSystem.ViewModels
         public int Status { get; set; }
 
         [SourceMember(nameof(PrTask.StartDate))]
-        public DateTime StartDate { get; set; }
+        public string StartDate { get; set; }
 
         [SourceMember(nameof(PrTask.EndDate))]
-        public DateTime EndDate { get; set; }
+        public string EndDate { get; set; }
 
         [SourceMember(nameof(PrTask.Manager))]
         public int Manager { get; set; }

@@ -11,6 +11,9 @@ namespace ProjectManagementSystem.ViewModels
     [AutoMap(typeof(Project), ReverseMap = true)]
     public class ProjectVM
     {
+        [SourceMember(nameof(Project.Id))]
+        public int Id { get; set; }
+
         [SourceMember(nameof(Project.Name))]
         public string Name { get; set; }
 

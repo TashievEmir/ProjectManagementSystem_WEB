@@ -40,13 +40,7 @@ async function addTask(){
         window.location.href="addTask.html";
 }
 async function Save(){
-    /*let formData=new FormData();
 
-    formData.append("Name", document.getElementById("name").value);
-    formData.append("Manager", document.getElementById("managers").value);
-    formData.append("Startdate", document.getElementById("startdate").value);
-    formData.append("Enddate", document.getElementById("enddate").value);
-    formData.append("Status", document.getElementById("status").value);*/
     let data={
         "name":`${document.getElementById("name").value}`,
         "manager":`${document.getElementById("managers").value}`,
@@ -55,12 +49,7 @@ async function Save(){
         "enddate":`${document.getElementById("enddate").value}`
     }
     const selectElement = document.getElementById("members");
-    /*selectElement.addEventListener("change", () => {
-        const selectedOptions = selectElement.selectedOptions;
-        for (let i = 0; i < selectedOptions.length; i++) {
-            formData.append(`members`, selectedOptions[i].value);
-        }
-    })*/
+
     const selectedOptions = selectElement.selectedOptions;
     const selectedValues = [];
     for (let i = 0; i < selectedOptions.length; i++) {
