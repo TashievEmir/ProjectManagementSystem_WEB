@@ -22,7 +22,7 @@ header {
 }
 .logo{
     display: flex;
-    margin: 0 auto; /* Set left and right margins to auto */
+    margin: 0 auto; 
     align-items: center;
     background: #C9A66B;
 }
@@ -35,6 +35,7 @@ header {
     background-color: #C9A66B;
 }
 header button{
+    margin-right: 1%;
     border-style: solid;
     padding: 0.5rem 1rem;
 }
@@ -68,7 +69,6 @@ caption {
     margin-bottom: 1rem;
 }
 th, td {
-    /*border: 1px solid #ccc;*/
     padding: 0.5rem;
     text-align: left;
 }
@@ -77,8 +77,11 @@ th {
     font-weight: bold;
 }
 table select, table input{
+    border-radius: 0.5rem;
     border-style: solid;
     border-color: #1e0000;
+    font-size: 18px;
+    padding: 0.5rem;
 }
 table button{
     border-style: solid;
@@ -109,7 +112,7 @@ aside button{
     border-style: solid;
     border-color: #1e0000;
     width: 100%;
-    height: 20%;
+    height: 15%;
     margin-top: 2%;
     margin-bottom: 3%;
 }
@@ -128,15 +131,25 @@ footer {
 footer p{
     background: #C9A66B;
 }
-input{
-    width: 40%;
-    height: 3%;
-}
+
 section table{
     caption-side: top;
     border-collapse: separate;
     border-spacing: 3px;
-    /*border: 2px solid #1e0000;*/
     empty-cells: show;
     table-layout: auto;
+}
+button{
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+}
+.hover-scale {
+    transition: transform 0.2s ease-in-out;
+}
+
+button:hover {
+        transform: scale(1.1);
+        background-color: white;
+        box-shadow: 0 8px 8px #ccc, 0 -8px 8px #ccc;
 }

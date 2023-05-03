@@ -25,6 +25,8 @@ body{
 }
 .signIn{
     display: flex;
+    justify-content: center;
+    margin-top: 5%;
 }
 .signIn h3{
     display: flex;
@@ -40,10 +42,26 @@ h4{
 }
 .fields{
     text-align: center;
-    display: flex;
+    display: block;
     flex-wrap: wrap;
     margin-left: 40px;
 }
 .form-input{
     width: 100%
+}
+button{
+    width: 25%;
+    height: 7%;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+}
+.hover-scale {
+    transition: transform 0.2s ease-in-out;
+}
+
+button:hover {
+        transform: scale(1.1);
+        background-color: white;
+        box-shadow: 0 8px 8px #ccc, 0 -8px 8px #ccc;
 }

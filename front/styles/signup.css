@@ -11,6 +11,9 @@ body{
     width: 50%;
     margin-left: 25%;
 }
+h1{
+padding-top: 7%;
+}
 .imgLogo{
     background-color: #C9A66B;
     height: 200px;
@@ -48,5 +51,21 @@ h4{
 }
 .form-input{
     width: 100%
+}
+button{
+    width: 25%;
+    height: 7%;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+}
+.hover-scale {
+    transition: transform 0.2s ease-in-out;
+}
+
+button:hover {
+        transform: scale(1.1);
+        background-color: white;
+        box-shadow: 0 8px 8px #ccc, 0 -8px 8px #ccc;
 }
 

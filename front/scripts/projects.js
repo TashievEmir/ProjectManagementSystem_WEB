@@ -76,11 +76,11 @@ window.onload=()=>{
                 
                 if (pr.status == "finished") 
                 {
-                    tr.children[0].style.backgroundColor = 'aqua'; tr.children[1].style.backgroundColor = 'aqua';
-                    tr.children[2].style.backgroundColor = 'aqua'; tr.children[3].style.backgroundColor = 'aqua';
-                    tr.children[4].style.backgroundColor = 'aqua'; tr.children[5].style.backgroundColor = 'aqua';
-                    tr.children[6].style.backgroundColor = 'aqua'; tr.children[7].style.backgroundColor = 'aqua';
-                    tr.children[8].style.backgroundColor = 'aqua';
+                    tr.children[0].style.backgroundColor = 'green'; tr.children[1].style.backgroundColor = 'green';
+                    tr.children[2].style.backgroundColor = 'green'; tr.children[3].style.backgroundColor = 'green';
+                    tr.children[4].style.backgroundColor = 'green'; tr.children[5].style.backgroundColor = 'green';
+                    tr.children[6].style.backgroundColor = 'green'; tr.children[7].style.backgroundColor = 'green';
+                    tr.children[8].style.backgroundColor = 'green';
                 } 
                 else if (new Date(pr.endDate) < new Date()) 
                 {
@@ -100,11 +100,11 @@ window.onload=()=>{
                 }
                 else if(new Date(pr.startDate) < new Date() && new Date(pr.endDate) > new Date() )
                 {
-                    tr.children[0].style.backgroundColor = 'yellow'; tr.children[1].style.backgroundColor = 'yellow';
-                    tr.children[2].style.backgroundColor = 'yellow'; tr.children[3].style.backgroundColor = 'yellow';
-                    tr.children[4].style.backgroundColor = 'yellow'; tr.children[5].style.backgroundColor = 'yellow';
-                    tr.children[6].style.backgroundColor = 'yellow'; tr.children[7].style.backgroundColor = 'yellow';
-                    tr.children[8].style.backgroundColor = 'yellow';
+                    tr.children[0].style.backgroundColor = 'aquamarine'; tr.children[1].style.backgroundColor = 'aquamarine';
+                    tr.children[2].style.backgroundColor = 'aquamarine'; tr.children[3].style.backgroundColor = 'aquamarine';
+                    tr.children[4].style.backgroundColor = 'aquamarine'; tr.children[5].style.backgroundColor = 'aquamarine';
+                    tr.children[6].style.backgroundColor = 'aquamarine'; tr.children[7].style.backgroundColor = 'aquamarine';
+                    tr.children[8].style.backgroundColor = 'aquamarine';
                 }
                 else
                 {
@@ -257,6 +257,7 @@ async function Update(button)
     throw new Error('Network response was not ok');
   }
   alert("the data updated succesfully");
+  location.reload();
 })
 .catch(error => {
   console.error('There was a problem with the fetch request:', error);

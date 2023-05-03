@@ -61,6 +61,7 @@ section {
 table {
     background-color: white;
     border-collapse: collapse;
+    border-radius: 0.5rem;
     width: 100%;
     margin-bottom: 1rem;
     height: auto;
@@ -74,6 +75,7 @@ caption {
 
 th, td {
     border: 1px solid #ccc;
+    border-radius: 0.5rem;
     padding: 0.5rem;
     text-align: left;
 }
@@ -101,7 +103,7 @@ aside button{
     border-style: solid;
     border-color: #1e0000;
     width: 100%;
-    height: 20%;
+    height: 15%;
     margin-top: 2%;
     margin-bottom: 3%;
 }
@@ -130,4 +132,18 @@ section table{
 }
 .green{
     background-color: green;
+}
+button{
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+}
+.hover-scale {
+    transition: transform 0.2s ease-in-out;
+}
+
+button:hover {
+        transform: scale(1.1);
+        background-color: white;
+        box-shadow: 0 8px 8px #ccc, 0 -8px 8px #ccc;
 }

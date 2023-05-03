@@ -38,15 +38,19 @@ window.onload = () => {
         })
         .catch(error => console.error(error));
 };
+
 async function openProjects(){
     window.location.href="projects.html";
 }
+
 async function addProject(){
     window.location.href="addProject.html";
 }
+
 async function openTasks(){
     window.location.href="tasks.html";
 }
+
 async function Save(){
     let data = {
         "name":`${document.getElementById("name").value}`,
@@ -66,4 +70,9 @@ async function Save(){
     });
     if(response.ok){ alert("The task has saved succesfully"); }
     else alert("something went wrong, please try again")
+}
+
+async function LogOut(){
+    window.localStorage.removeItem("tokenKey");
+    window.location.href="authentification.html"
 }

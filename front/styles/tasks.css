@@ -56,6 +56,7 @@ section {
 }
 table {
     border-collapse: collapse;
+    background-color: white;
     width: 100%;
     margin-bottom: 1rem;
 }
@@ -68,6 +69,7 @@ caption {
 
 th, td {
     border: 1px solid #ccc;
+    border-radius: 0.5rem;
     padding: 0.5rem;
     text-align: left;
 }
@@ -94,7 +96,7 @@ aside button{
     background-color: #EBDCB2;
     border-style: solid;
     width: 100%;
-    height: 20%;
+    height: 15%;
     margin-top: 2%;
     margin-bottom: 3%;
 }
@@ -123,4 +125,18 @@ section table{
 }
 .UpdateBtn{
     margin-right: 2%;
+}
+button{
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+}
+.hover-scale {
+    transition: transform 0.2s ease-in-out;
+}
+
+button:hover {
+        transform: scale(1.1);
+        background-color: white;
+        box-shadow: 0 8px 8px #ccc, 0 -8px 8px #ccc;
 }
