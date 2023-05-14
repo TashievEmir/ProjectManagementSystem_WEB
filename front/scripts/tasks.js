@@ -1,4 +1,9 @@
 window.onload=()=>{
+
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const userId = urlParams.get('id');
+
     fetch(`https://localhost:44345/api/data/GetTasks/${JSON.parse(window.localStorage.getItem('tokenKey')).username}`)
         .then(response => response.json())
         .then(data => {
@@ -110,6 +115,7 @@ async function addProject(){
     else
         window.location.href="addProject.html";
 }
+
 async function addTask(){
     let roleuser=JSON.parse(window.localStorage.getItem('tokenKey')).role;
     console.log(roleuser);
@@ -119,12 +125,26 @@ async function addTask(){
     else
         window.location.href="addTask.html";
 }
+
 async function openProjects(){
     window.location.href="projects.html";
 }
+
 async function LogOut(){
     window.localStorage.removeItem("tokenKey");
     window.location.href="authentification.html";
+}
+
+async function openUsers(){
+
+    let roleuser=JSON.parse(window.localStorage.getItem('tokenKey')).role;
+
+    if(roleuser=="employee")
+    {
+        alert("you don't have permission");
+    }
+    else
+        window.location.href="users.html";
 }
 
 const myMap = new Map();

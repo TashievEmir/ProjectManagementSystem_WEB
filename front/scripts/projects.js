@@ -1,4 +1,5 @@
-window.onload=()=>{
+window.onload=()=>
+{
     fetch(`https://localhost:44345/api/data/GetProjects/${JSON.parse(window.localStorage.getItem('tokenKey')).username}`)
         .then(response => response.json())
         .then(data => {
@@ -42,6 +43,7 @@ window.onload=()=>{
 
                 let projectMembers = document.createElement("td");
                 let projectMembersSelect=document.createElement("select");
+                projectMembersSelect.setAttribute('id','mySelect');
 
                 if(pr.members){
                     pr.members.forEach(x=>{
@@ -51,6 +53,12 @@ window.onload=()=>{
                         projectMembersSelect.appendChild(projectMembersOption);
                     })
                 }
+                projectMembersSelect.onchange = function() {
+                    const selectedOption = this.options[this.selectedIndex];
+                    const userId = selectedOption.value;
+                    window.location.href = `tasks.html?id=${userId}`;
+                  };
+
                 projectMembers.appendChild(projectMembersSelect);
                 tr.appendChild(projectMembers);
 
@@ -116,67 +124,8 @@ window.onload=()=>{
         .catch(error => console.error(error));
 
 }
-document.onload=()=>
-{
-    var table = document.getElementById("projects");
-    var rows = table.getElementsByTagName("tr");
-    let currentDate = new Date().toJSON().slice(0, 10);
 
-    for(let i = 1; i < rows.length; i++) {
-        var statusValue = rows[i].cells[2].textContent;
-        var startDate= rows[i].cells[3].textContent;
-        var endDateValue = rows[i].cells[4].firstChild.nodeValue;
-        if (statusValue == 'notStarted' && startDate>currentDate) {
-            rows[i].style.backgroundColor = "red";
-        }
-        else {
-            rows[i].style.backgroundColor = "green";
-        }
-    }
-}
-setTimeout(function() {
-
-    var table = document.getElementById("projects");
-    var rows = table.getElementsByTagName("tr");
-    let currentDate = new Date().toJSON().slice(0, 10);
-    
-    for(let i = 0; i < rows.length; i++) 
-    {
-        var statusValue = rows[i].cells[2].textContent;
-        var startDate= rows[i].cells[3].textContent;
-        var endDateValue = rows[i].cells[4].firstChild.nodeValue;
-        
-        if (statusValue == 'notStarted' && startDate>currentDate) 
-        {
-            rows[i].style.backgroundColor = "red";
-        }
-        else {
-            rows[i].className="green";
-        }
-    }
-}, 2000);
-document.addEventListener('load', function() {
-    
-    var table = document.getElementById("projects");
-    var rows = table.getElementsByTagName("tr");
-    let currentDate = new Date().toJSON().slice(0, 10);
-
-    for(let i = 1; i < rows.length; i++) 
-    {
-        var statusValue = rows[i].cells[2].textContent;
-        var startDate= rows[i].cells[3].textContent;
-        var endDateValue = rows[i].cells[4].firstChild.nodeValue;
-
-        if (statusValue == 'notStarted' && startDate>currentDate) 
-        {
-            rows[i].style.backgroundColor = "red";
-        }
-        else 
-        {
-            rows[i].style.backgroundColor = "green";
-        }
-    }
-});
+const mySelect = document.getElementById('mySelect');
 
 async function addProject(){
 
@@ -189,6 +138,7 @@ async function addProject(){
     else
         window.location.href="addProject.html";
 }
+
 async function addTask(){
 
     let roleuser=JSON.parse(window.localStorage.getItem('tokenKey')).role;
@@ -200,13 +150,29 @@ async function addTask(){
     else
         window.location.href="addTask.html";
 }
+
+
 async function openTasks(){
     window.location.href="tasks.html";
 }
+
 async function LogOut(){
     window.localStorage.removeItem("tokenKey");
     window.location.href="authentification.html";
 }
+
+async function openUsers(){
+
+    let roleuser=JSON.parse(window.localStorage.getItem('tokenKey')).role;
+
+    if(roleuser=="employee")
+    {
+        alert("you don't have permission");
+    }
+    else
+        window.location.href="users.html";
+}
+
 
 const myMap = new Map();
 myMap.set('notStarted', '1');

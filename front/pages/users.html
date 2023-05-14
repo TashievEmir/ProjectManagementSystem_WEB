@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Welcome</title>
-    <link rel="stylesheet" type="text/css" href="../styles/welcome.css">
+    <title>Tasks</title>
+    <link rel="stylesheet" type="text/css" href="../styles/users.css">
 </head>
 <body>
 <header>
@@ -19,11 +19,20 @@
         <button onclick="addProject()">Add Project</button>
         <button onclick="addTask()">Add Task</button>
         <button onclick="openTasks()">Tasks</button>
-        <button onclick="openUsers()">Users</button>
     </aside>
     <section>
-        <img src="../pictures/logo.png" alt="logo" width="200px" height="200px">
-        <p>Welcome to the Emir's Project Management System</p>
+        <table style="border-radius: 0.5rem;">
+            <caption><b>Users</b></caption>
+            <thead>
+            <tr>
+                <th>№</th><th>Name</th> <th>Surname</th> <th>Role</th> <th>Email</th> <th></th><th></th>
+            </tr>
+            </thead>
+            <tbody id="projects">
+
+            </tbody>
+
+        </table>
     </section>
 
 </main>
@@ -36,6 +45,6 @@
         window.history.forward();
     }
 </script>
-<script src="../scripts/welcome.js"></script>
+<script src="../scripts/users.js"></script>
 </body>
 </html>

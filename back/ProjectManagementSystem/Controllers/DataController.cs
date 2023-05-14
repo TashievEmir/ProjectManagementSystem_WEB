@@ -3,8 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using Microsoft.Extensions.Caching.Memory;
-using Newtonsoft.Json;
-using Org.BouncyCastle.Math.EC.Rfc7748;
 using ProjectManagementSystem.Entity;
 using ProjectManagementSystem.ViewModels;
 using System;
@@ -210,6 +208,64 @@ namespace ProjectManagementSystem.Controllers
                 Console.WriteLine(e.Message);
             }
             return Ok();
+        }
+
+        //get all user 
+        [HttpGet]
+        public async Task<ActionResult<List<AppUser>>> GetUsers()
+        {
+            var users = await db.Users.ToListAsync();
+
+            if (users == null) return NotFound();
+
+            return users;
+        }
+
+        [HttpPut]
+        public async Task<ActionResult<PrTask>> UpdateUser([FromBody] AppUserVM uservm)
+        {
+
+            if (!db.Users.Any(x => x.Id == uservm.Id))
+            {
+                return NotFound();
+            }
+
+            AppUser user = _mapper.Map<AppUser>(uservm);
+            try
+            {
+                db.Update(user);
+                await db.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            return Ok();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteUser(int id)
+        {
+            AppUser user = db.Users.FirstOrDefault(x => x.Id == id);
+
+            if (user is null)
+            {
+                return NotFound();
+            }
+
+            try
+            {
+                db.Users.Remove(user);
+                await db.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+
+            return Ok();
+        
+        
         }
     }
 }

@@ -76,9 +76,22 @@ async function Save(){
     else alert("something went wrong, please try again")
 }
 async function LogOut(){
+
     window.localStorage.removeItem("tokenKey");
     window.location.href="authentification.html"
 }
 async function openTasks(){
+
     window.location.href="tasks.html";
+}
+async function openUsers(){
+
+    let roleuser=JSON.parse(window.localStorage.getItem('tokenKey')).role;
+
+    if(roleuser=="employee")
+    {
+        alert("you don't have permission");
+    }
+    else
+        window.location.href="users.html";
 }
