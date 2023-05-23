@@ -88,6 +88,10 @@ async function openProjects(){
     window.location.href="projects.html";
 }
 
+async function openTasks(){
+  window.location.href="tasks.html";
+}
+
 async function LogOut(){
     window.localStorage.removeItem("tokenKey");
     window.location.href="authentification.html";

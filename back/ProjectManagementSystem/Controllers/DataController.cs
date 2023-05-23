@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using Microsoft.Extensions.Caching.Memory;
+using MimeKit.Encodings;
+using Org.BouncyCastle.Math.EC.Rfc7748;
 using ProjectManagementSystem.Entity;
 using ProjectManagementSystem.ViewModels;
 using System;
@@ -99,6 +101,38 @@ namespace ProjectManagementSystem.Controllers
                     EndDate=item.EndDate.Date.ToString("yyyy-MM-dd"),
                     UserId=item.UserId,
                     ProjectId=item.ProjectId
+                };
+                tasksList.Add(tasksvm);
+            }
+            return tasksList;
+        }
+
+        //get user's tasks 
+        [HttpGet("{id}")]
+        public async Task<ActionResult<List<GetTasksVM>>> GetTasksById(string id)
+        {
+            var userId = await db.Users.FirstOrDefaultAsync(x => x.Id == Convert.ToInt64(id));
+
+            if (userId == null) return NotFound();
+
+            var tasks = await db.Tasks.Where(x => x.UserId == userId.Id).ToListAsync();
+
+            List<GetTasksVM> tasksList = new List<GetTasksVM>();
+
+            foreach (var item in tasks)
+            {
+                var managerName = await db.Users.FirstOrDefaultAsync(x => x.Id == item.Manager);
+                int enumNum = Convert.ToInt32(item.Status);
+                GetTasksVM tasksvm = new GetTasksVM()
+                {
+                    Id = item.Id,
+                    Name = item.Name,
+                    Manager = managerName.Name,
+                    Status = Enum.GetName(typeof(EnumStatus), enumNum),
+                    StartDate = item.StartDate.Date.ToString("yyyy-MM-dd"),
+                    EndDate = item.EndDate.Date.ToString("yyyy-MM-dd"),
+                    UserId = item.UserId,
+                    ProjectId = item.ProjectId
                 };
                 tasksList.Add(tasksvm);
             }
@@ -252,20 +286,41 @@ namespace ProjectManagementSystem.Controllers
             {
                 return NotFound();
             }
-
             try
             {
-                db.Users.Remove(user);
-                await db.SaveChangesAsync();
+                /*if (user.Role == 1)
+                {
+                    return BadRequest();
+                }
+                else
+                {
+                    var pruser = db.ProjectUsers.Where(x => x.UserId == id);
+                    if (pruser is not null)
+                    {
+                        db.ProjectUsers.RemoveRange(pruser);
+                    }
+                     var tasks = db.Tasks.Where(x => x.)
+                    db.Users.Remove(user);
+                    await db.SaveChangesAsync();
+                }*/
+                /*
+
+                var projects = db.Projects.Where(x => x.Manager == id);
+                if(projects is not null)
+                {
+                    foreach (var x in projects)
+                    {
+                        x.Manager
+                    }
+                }*/
+
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
             }
 
-            return Ok();
-        
-        
+            return Ok();       
         }
     }
 }

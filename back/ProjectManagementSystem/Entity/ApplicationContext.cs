@@ -22,19 +22,19 @@ namespace ProjectManagementSystem.Entity
             .HasOne(p => p.UserManager)
             .WithMany(p => p.TaskManager)
             .HasForeignKey(p => p.Manager)
-            .OnDelete(DeleteBehavior.NoAction);
+            .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<PrTask>()
             .HasOne(p => p.User)
             .WithMany(p => p.TaskUser)
             .HasForeignKey(p => p.UserId)
-            .OnDelete(DeleteBehavior.NoAction);
+            .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Project>()
             .HasOne(p => p.User)
             .WithMany(p => p.Projects)
             .HasForeignKey(p => p.Manager)
-            .OnDelete(DeleteBehavior.NoAction);
+            .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<ProjectUser>()
                 .HasKey(sc => new { sc.UserId, sc.ProjectId });
@@ -43,13 +43,13 @@ namespace ProjectManagementSystem.Entity
                 .HasOne<AppUser>(sc => sc.User)
                 .WithMany(s => s.ProjectUsers)
                 .HasForeignKey(sc => sc.UserId)
-                .OnDelete(DeleteBehavior.NoAction);
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<ProjectUser>()
                 .HasOne<Project>(sc => sc.Project)
                 .WithMany(s => s.ProjectUsers)
                 .HasForeignKey(sc => sc.ProjectId)
-                .OnDelete(DeleteBehavior.NoAction);
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

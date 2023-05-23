@@ -56,8 +56,9 @@ window.onload=()=>
                 projectMembersSelect.onchange = function() {
                     const selectedOption = this.options[this.selectedIndex];
                     const userId = selectedOption.value;
+                    localStorage.setItem("id", JSON.stringify(userId));
                     window.location.href = `tasks.html?id=${userId}`;
-                  };
+                };
 
                 projectMembers.appendChild(projectMembersSelect);
                 tr.appendChild(projectMembers);

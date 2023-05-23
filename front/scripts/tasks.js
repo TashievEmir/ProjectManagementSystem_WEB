@@ -1,10 +1,10 @@
-window.onload=()=>{
+window.onload=()=>
+{
+    let id = window.localStorage.getItem('id');
 
-    const queryString = window.location.search;
-    const urlParams = new URLSearchParams(queryString);
-    const userId = urlParams.get('id');
-
-    fetch(`https://localhost:44345/api/data/GetTasks/${JSON.parse(window.localStorage.getItem('tokenKey')).username}`)
+    if(id !==undefined && id !== null)
+    {
+        fetch(`https://localhost:44345/api/data/GetTasksById/${JSON.parse(window.localStorage.getItem('id'))}`)
         .then(response => response.json())
         .then(data => {
             let tasks = document.querySelector("tbody");
@@ -104,11 +104,112 @@ window.onload=()=>{
             });
         })
         .catch(error => console.error(error));
+    }
+    else
+    {
+        fetch(`https://localhost:44345/api/data/GetTasks/${JSON.parse(window.localStorage.getItem('tokenKey')).username}`)
+        .then(response => response.json())
+        .then(data => {
+            let tasks = document.querySelector("tbody");
+            data.forEach(pr => {
+                let tr = document.createElement("tr");
+
+                let taskId = document.createElement("td");
+                taskId.textContent = `${pr.id}`;
+                tr.appendChild(taskId);
+
+                let taskName = document.createElement("td");
+                taskName.textContent = `${pr.name}`
+                tr.appendChild(taskName)
+
+                let taskManager = document.createElement("td");
+                taskManager.textContent = `${pr.manager}`
+                tr.appendChild(taskManager)
+
+                let taskStatus = document.createElement("td");
+                taskStatus.textContent = `${pr.status}`;
+                taskStatus.setAttribute('id','status');
+                taskStatus.addEventListener("click", function() {
+                    taskStatus.contentEditable = true;
+                  });
+                tr.appendChild(taskStatus)
+
+                let taskStartDate = document.createElement("td");
+                taskStartDate.textContent = `${pr.startDate}`;
+                tr.appendChild(taskStartDate);
+
+                let taskEndDate = document.createElement("td");
+                taskEndDate.textContent = `${pr.endDate}`;
+                tr.appendChild(taskEndDate);
+
+                let taskProject = document.createElement("td");
+                taskProject.textContent = `${pr.projectId}`;
+                tr.appendChild(taskProject);
+                
+                let updateTd = document.createElement("td");
+                let updateBtn=document.createElement("button");
+                updateBtn.textContent="Update";
+                updateBtn.classList.add("row-btn");
+                updateBtn.onclick=function() {
+                    Update(this);
+                };
+                updateTd.appendChild(updateBtn);
+                tr.appendChild(updateTd);
+
+                let deleteTd = document.createElement("td");
+                let deleteBtn=document.createElement("button");
+                deleteBtn.textContent="Delete";
+                deleteBtn.classList.add("row-btn");
+                deleteBtn.onclick=function() {
+                    Delete(this);
+                };
+                deleteTd.appendChild(deleteBtn);
+                tr.appendChild(deleteTd);
+
+                if (pr.status == "finished") 
+                {
+                    tr.children[0].style.backgroundColor = 'green'; tr.children[1].style.backgroundColor = 'green';
+                    tr.children[2].style.backgroundColor = 'green'; tr.children[3].style.backgroundColor = 'green';
+                    tr.children[4].style.backgroundColor = 'green'; tr.children[5].style.backgroundColor = 'green';
+                    tr.children[6].style.backgroundColor = 'green'; tr.children[7].style.backgroundColor = 'green';
+                    tr.children[8].style.backgroundColor = 'green';
+                } 
+                else if (new Date(pr.endDate) < new Date()) 
+                {
+                    tr.children[0].style.backgroundColor = 'red'; tr.children[1].style.backgroundColor = 'red';
+                    tr.children[2].style.backgroundColor = 'red'; tr.children[3].style.backgroundColor = 'red';
+                    tr.children[4].style.backgroundColor = 'red'; tr.children[5].style.backgroundColor = 'red';
+                    tr.children[6].style.backgroundColor = 'red'; tr.children[7].style.backgroundColor = 'red';
+                    tr.children[8].style.backgroundColor = 'red';
+                } 
+                else if (new Date(pr.startDate) < new Date() && pr.status=="notStarted") 
+                {
+                    tr.children[0].style.backgroundColor = 'red'; tr.children[1].style.backgroundColor = 'red';
+                    tr.children[2].style.backgroundColor = 'red'; tr.children[3].style.backgroundColor = 'red';
+                    tr.children[4].style.backgroundColor = 'red'; tr.children[5].style.backgroundColor = 'red';
+                    tr.children[6].style.backgroundColor = 'red'; tr.children[7].style.backgroundColor = 'red';
+                    tr.children[8].style.backgroundColor = 'red';
+                }
+                else if(new Date(pr.startDate) < new Date() && new Date(pr.endDate) > new Date() )
+                {
+                    tr.children[0].style.backgroundColor = 'aquamarine'; tr.children[1].style.backgroundColor = 'aquamarine';
+                    tr.children[2].style.backgroundColor = 'aquamarine'; tr.children[3].style.backgroundColor = 'aquamarine';
+                    tr.children[4].style.backgroundColor = 'aquamarine'; tr.children[5].style.backgroundColor = 'aquamarine';
+                    tr.children[6].style.backgroundColor = 'aquamarine'; tr.children[7].style.backgroundColor = 'aquamarine';
+                    tr.children[8].style.backgroundColor = 'aquamarine';
+                }
+
+                tasks.appendChild(tr);
+            });
+        })
+        .catch(error => console.error(error));
+    }
 }
 
 async function addProject(){
+
     let roleuser=JSON.parse(window.localStorage.getItem('tokenKey')).role;
-    console.log(roleuser);
+
     if(roleuser=="employee"){
         alert("you don't have permission");
     }
@@ -117,9 +218,11 @@ async function addProject(){
 }
 
 async function addTask(){
+
     let roleuser=JSON.parse(window.localStorage.getItem('tokenKey')).role;
-    console.log(roleuser);
-    if(roleuser=="employee"){
+
+    if(roleuser=="employee")
+    {
         alert("you don't have permission");
     }
     else
@@ -127,11 +230,18 @@ async function addTask(){
 }
 
 async function openProjects(){
+
+    window.localStorage.removeItem('id');
+
     window.location.href="projects.html";
 }
 
 async function LogOut(){
+
+    window.localStorage.removeItem('id');
+
     window.localStorage.removeItem("tokenKey");
+
     window.location.href="authentification.html";
 }
 
@@ -157,7 +267,9 @@ async function Update(button){
       var row = button.parentNode.parentNode;
       var cells = row.getElementsByTagName("td");
       var rowData = [];
-      for (var i = 0; i < cells.length; i++) {
+
+      for (var i = 0; i < cells.length; i++) 
+      {
       rowData.push(cells[i].textContent);
       }
 

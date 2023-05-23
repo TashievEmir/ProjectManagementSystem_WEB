@@ -17,8 +17,9 @@ async function authentificate(){
         });
         const data2 = await response.json();
         if(response.ok){
+            
             localStorage.setItem("tokenKey", JSON.stringify(data2));
-            console.log(data2);
+
             window.location.href="welcome.html"
         }
         else{
@@ -48,7 +49,7 @@ async function forgot(){
             "code": `${code}`,
             "email": `${mail}`
         }
-        debugger
+
         const request= await fetch(`https://localhost:44345/api/auth/checkcodeemail`,{
             method:"POST",
             headers:{"Content-Type":"application/json"},
