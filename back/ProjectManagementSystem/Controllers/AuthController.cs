@@ -17,6 +17,8 @@ using Microsoft.IdentityModel.Tokens;
 using ProjectManagementSystem.Token;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using ProjectManagementSystem.Interfaces;
+using ProjectManagementSystem.Services;
 
 namespace ProjectManagementSystem.Controllers
 {
@@ -24,14 +26,16 @@ namespace ProjectManagementSystem.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private IMemoryCache cache;
         ApplicationContext db;
         private readonly IMapper _mapper;
-        public AuthController(ApplicationContext db, IMapper mapper, IMemoryCache cache)
+        private ARegistrationService registration;
+        private IResetPassword resetPassword;
+        public AuthController(ApplicationContext db, IMapper mapper, ARegistrationService registration, IResetPassword resetPassword)
         {
             this.db = db;
             _mapper = mapper;
-            this.cache=cache;
+            this.registration = registration;
+            this.resetPassword = resetPassword;
         }
 
         [HttpPost]
@@ -44,7 +48,7 @@ namespace ProjectManagementSystem.Controllers
             }
 
             var now = DateTime.UtcNow;
-            // создаем JWT-токен
+
             var jwt = new JwtSecurityToken(
                     issuer: AuthOptions.ISSUER,
                     audience: AuthOptions.AUDIENCE,
@@ -100,56 +104,33 @@ namespace ProjectManagementSystem.Controllers
             return null;
         }
 
-        //create new user
         [HttpPost]
-        public async Task<ActionResult<AppUser>> SignUp(UserSignUpRequest obj)
+        public async Task<ActionResult> SignUp(UserSignUpRequest obj)
         {
             if (obj == null)
             {
                 return BadRequest();
             }
-            var user = _mapper.Map<AppUser>(obj);
-            Regex regex = new Regex(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");
-            Match match = regex.Match(user.Email);
-            if (!match.Success)
-            {
-                return BadRequest();
-            }
-            user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
-            
-            await db.Users.AddAsync(user);
-            await db.SaveChangesAsync();
-            return Ok(user);
-        }
 
-        // check email for verification for create new password
+            var user = _mapper.Map<AppUser>(obj);
+            registration.SaveUser(user);
+            
+            return Ok(user);
+        }        
+
         [HttpPost]
-        public async Task<ActionResult<AppUser>> CheckSuchEmailExist(UserSignInRequest obj)
+        public async Task<ActionResult> ForgotPassword(UserSignInRequest obj)
         {
-            ObjectCache objcache=new ObjectCache();
-            var user = await db.Users.FirstOrDefaultAsync(x => x.Email == obj.Email);
+            var user = resetPassword.CheckEmailExistence(obj.Email);
             if (user != null)
             {
-                try
-                {
-                    Random random = new Random();
-                    objcache.code = random.Next(1000, 10000);
-                    SendEmail(objcache.code, obj.Email);
-                    cache.Set(user.Id, objcache, new MemoryCacheEntryOptions
-                    {
-                        AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(3)
-                    });
+                    resetPassword.SaveCodeInCache(user);
+                    
                     return Ok();
-                }
-                catch (Exception ex)
-                {
-                    return BadRequest();
-                }
             }
             else return NotFound();
         }
 
-        //send verification code to the user
         public void SendEmail(int code, string mail)
         {
             String SendMailFrom = "tes01.star@gmail.com";
@@ -175,33 +156,21 @@ namespace ProjectManagementSystem.Controllers
             smtp.Disconnect(true);
         }
 
-        //this func check code which was has sent to user's email
         [HttpPost]
         public async Task<ActionResult<AppUser>> CheckCodeEmail(UserCheckCode obj)
         {
-            ObjectCache objectCache = new ObjectCache();
-            var user = await db.Users.FirstOrDefaultAsync(x => x.Email == obj.Email);
-            if (!cache.TryGetValue(user.Id,out objectCache))
+            var answer = resetPassword.CheckCodeFromEmail(obj);
+            if(answer != null)
             {
-                return BadRequest();
+                return Ok();
             }
-            else
-            {
-                if (obj.Code == objectCache.code) return Ok();
-                return BadRequest();
-            }
+            return NotFound();
         }
 
-        //create new password for the user
         [HttpPost]
         public async Task<ActionResult<AppUser>> CreateNewPassword(UserSignInRequest obj)
         {
-            var user = db.Users.FirstOrDefault(x => x.Email == obj.Email);
-            if (user == null) return NotFound();
-            user.Password=obj.Password;
-            user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
-            db.Entry(user).State = EntityState.Modified;
-            db.SaveChanges();
+            resetPassword.CreateNewPassword(obj);
             return Ok();
         }
     }

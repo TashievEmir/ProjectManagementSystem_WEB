@@ -4,10 +4,13 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using ProjectManagementSystem.Entity;
+using ProjectManagementSystem.Interfaces;
+using ProjectManagementSystem.Services;
 using ProjectManagementSystem.Token;
 using System;
 using System.Collections.Generic;
@@ -23,7 +26,7 @@ namespace ProjectManagementSystem
         
         public void ConfigureServices(IServiceCollection services)
         {
-            string con = "Server=DESKTOP-QTJG2EE;Database=ProjectMS;Trusted_Connection=True;";
+            string con = "Server=UKUK-31;Database=ProjectMS;Trusted_Connection=True;";
             services.AddAuthorization();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                     .AddJwtBearer(options =>
@@ -63,6 +66,11 @@ namespace ProjectManagementSystem
                            .AllowAnyHeader();
                 });
             });
+            services.AddTransient<ARegistrationService, RegistrationService>();
+            services.AddTransient<IResetPassword, ResetPasswordService>();
+            services.AddTransient<ISaveProjectService, SaveProjectService>();
+            services.AddTransient<ISaveTaskService, SaveTaskService>();
+
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

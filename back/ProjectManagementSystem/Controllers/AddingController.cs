@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using ProjectManagementSystem.Entity;
+using ProjectManagementSystem.Interfaces;
 using ProjectManagementSystem.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -17,13 +18,16 @@ namespace ProjectManagementSystem.Controllers
     {
         ApplicationContext db;
         private readonly IMapper _mapper;
-        public AddingController(ApplicationContext db, IMapper mapper, IMemoryCache cache)
+        private readonly ISaveProjectService saveProjectService;
+        private readonly ISaveTaskService saveTaskService;
+        public AddingController(ApplicationContext db, IMapper mapper, IMemoryCache cache, ISaveTaskService saveTaskService, ISaveProjectService saveProjectService)
         {
             this.db = db;
             _mapper = mapper;
+            this.saveTaskService = saveTaskService;
+            this.saveProjectService = saveProjectService;
         }
 
-        //get all users
         [HttpGet]
         public async Task<ActionResult<IEnumerable<AppUser>>> Get()
         {
@@ -31,7 +35,6 @@ namespace ProjectManagementSystem.Controllers
             return users;
         }
 
-        //get all managers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<AppUser>>> GetManagers()
         {
@@ -39,7 +42,6 @@ namespace ProjectManagementSystem.Controllers
             return managers;
         }
 
-        //get all projects
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Project>>> GetProjects()
         {
@@ -47,45 +49,19 @@ namespace ProjectManagementSystem.Controllers
             return projects;
         }
 
-        //save the data about new project
         [HttpPost]
-        public async Task<ActionResult<IEnumerable<AppUser>>> SaveProject( ProjectVM obj)
+        public async Task<ActionResult<ProjectVM>> SaveProject(ProjectVM obj)
         {
-            //adding project
-            Project project = _mapper.Map<Project>(obj);
-            await db.Projects.AddAsync(project);
-            await db.SaveChangesAsync();
+            saveProjectService.SaveProject(obj);
 
-            //adding members of project to the current project
-            var projectId = await db.Projects.FirstOrDefaultAsync(x => x.Name == obj.Name);
-                foreach (var item in obj.Members)
-                {
-                    ProjectUser projectUser = new ProjectUser()
-                    {
-                        ProjectId = projectId.Id,
-                        UserId = item
-                    };
-                    try
-                    {
-                        await db.ProjectUsers.AddAsync(projectUser);
-                        await db.SaveChangesAsync();
-                    }
-                    catch (Exception e)
-                    {
-                        Console.WriteLine(e);
-                    }
-
-                }          
+            saveProjectService.SavePeopleInProject(obj);  
             return Ok();
         }
 
-        //save the data about new task
         [HttpPost]
-        public async Task<ActionResult<IEnumerable<AppUser>>> SaveTask(PrTaskVM obj)
+        public async Task<ActionResult<PrTaskVM>> SaveTask(PrTaskVM obj)
         {
-            PrTask task = _mapper.Map<PrTask>(obj);
-            await db.Tasks.AddAsync(task);
-            await db.SaveChangesAsync();
+            saveTaskService.SaveTask(obj);
             return Ok();
         }
     }

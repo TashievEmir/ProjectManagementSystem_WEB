@@ -14,7 +14,7 @@ namespace ProjectManagementSystem.Entity
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Server=DESKTOP-QTJG2EE;Database=ProjectMS;Trusted_Connection=True;");
+            optionsBuilder.UseSqlServer(@"Server=UKUK-31;Database=ProjectMS;Trusted_Connection=True;");
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

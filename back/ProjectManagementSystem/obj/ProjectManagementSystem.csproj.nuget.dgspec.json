@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "E:\\3-kurs\\2-semestr\\web\\Project\\back\\ProjectManagementSystem\\ProjectManagementSystem.csproj": {}
+    "D:\\Emir\\Univer\\Web\\ProjectMS\\ProjectManagementSystem_WEB\\back\\ProjectManagementSystem\\ProjectManagementSystem.csproj": {}
   },
   "projects": {
-    "E:\\3-kurs\\2-semestr\\web\\Project\\back\\ProjectManagementSystem\\ProjectManagementSystem.csproj": {
+    "D:\\Emir\\Univer\\Web\\ProjectMS\\ProjectManagementSystem_WEB\\back\\ProjectManagementSystem\\ProjectManagementSystem.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\3-kurs\\2-semestr\\web\\Project\\back\\ProjectManagementSystem\\ProjectManagementSystem.csproj",
+        "projectUniqueName": "D:\\Emir\\Univer\\Web\\ProjectMS\\ProjectManagementSystem_WEB\\back\\ProjectManagementSystem\\ProjectManagementSystem.csproj",
         "projectName": "ProjectManagementSystem",
-        "projectPath": "E:\\3-kurs\\2-semestr\\web\\Project\\back\\ProjectManagementSystem\\ProjectManagementSystem.csproj",
-        "packagesPath": "C:\\Users\\99670\\.nuget\\packages\\",
-        "outputPath": "E:\\3-kurs\\2-semestr\\web\\Project\\back\\ProjectManagementSystem\\obj\\",
+        "projectPath": "D:\\Emir\\Univer\\Web\\ProjectMS\\ProjectManagementSystem_WEB\\back\\ProjectManagementSystem\\ProjectManagementSystem.csproj",
+        "packagesPath": "C:\\Users\\user\\.nuget\\packages\\",
+        "outputPath": "D:\\Emir\\Univer\\Web\\ProjectMS\\ProjectManagementSystem_WEB\\back\\ProjectManagementSystem\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\99670\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\user\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -27,6 +27,7 @@
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "C:\\Program Files\\dotnet\\library-packs": {},
+          "C:\\Program Files\\dotnet\\sdk\\7.0.306\\Sdks\\Microsoft.NET.Sdk.Web\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -99,7 +100,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.402\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.306\\RuntimeIdentifierGraph.json"
         }
       }
     }

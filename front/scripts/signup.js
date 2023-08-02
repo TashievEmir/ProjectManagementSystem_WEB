@@ -14,12 +14,15 @@ async function SignUp(){
             "surname":`${surname}`,
             "role": Number(role)
         }
+
         const response= await fetch(`https://localhost:44345/api/auth/signup`,{
             method:"POST",
             headers:{"Content-Type":"application/json"},
             body: JSON.stringify(data)
         });
-        await response.json();
+
+        response.json();
+        
         if(response.ok){
             window.location.href="authentification.html"
         }

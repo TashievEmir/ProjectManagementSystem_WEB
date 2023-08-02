@@ -30,13 +30,14 @@ async function authentificate(){
         console.log(error)
     }
 }
+
 async function forgot(){
     let mail=prompt("input your email","");
     let data=
         {
             "Email":`${mail}`
         }
-    const response= await fetch(`https://localhost:44345/api/auth/checksuchemailexist`,{
+    const response= await fetch(`https://localhost:44345/api/auth/ForgotPassword`,{
         method:"POST",
         headers:{"Content-Type":"application/json"},
         body: JSON.stringify(data)
@@ -62,6 +63,7 @@ async function forgot(){
         alert("There is no such email")
     }
 }
+
 function signup(){
     window.location.href="SignUp.html"
 }
