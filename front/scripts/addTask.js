@@ -51,6 +51,10 @@ async function openTasks(){
     window.location.href="tasks.html";
 }
 
+async function openUsers(){
+    window.location.href="users.html";
+}
+
 async function Save(){
     let data = {
         "name":`${document.getElementById("name").value}`,

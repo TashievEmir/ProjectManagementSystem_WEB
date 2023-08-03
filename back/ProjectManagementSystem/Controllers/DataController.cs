@@ -277,7 +277,7 @@ namespace ProjectManagementSystem.Controllers
             return Ok();
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{id}/{email}")]
         public async Task<ActionResult> DeleteUser(int id, string email)
         {
             AppUser userDelete = db.Users.FirstOrDefault(x => x.Id == id);
@@ -289,9 +289,42 @@ namespace ProjectManagementSystem.Controllers
             }
             try
             {
-                /*if (user.Role == 1)
+                if (user.Role == 1)
                 {
-                    return BadRequest();
+                    if (user.Email == email) return BadRequest();
+
+                    var tasksAsUser = db.Tasks.Where(x => x.UserId == id);
+                    if (tasksAsUser is not null)
+                    {
+                        db.Tasks.RemoveRange(tasksAsUser);
+                        await db.SaveChangesAsync();
+                    }
+
+                    var tasksAsManager = db.Tasks.Where(x => x.Manager == id);
+                    if (tasksAsManager is not null)
+                    {
+                        db.Tasks.RemoveRange(tasksAsManager);
+                        await db.SaveChangesAsync();
+                    }
+
+                    var projects = db.Projects.Where(x => x.Manager == id).ToList();
+                    if (projects is not null)
+                    {
+                        foreach(var project in projects)
+                        {
+                            var pruser = db.ProjectUsers.Where(x => x.ProjectId == project.Id).ToList();
+                            if (pruser is not null)
+                            {
+                                db.ProjectUsers.RemoveRange(pruser);
+                                await db.SaveChangesAsync();
+                            }
+                        }
+                        db.Projects.RemoveRange(projects);
+                    }
+                    await db.SaveChangesAsync();
+
+                    db.Users.RemoveRange(user);
+                    await db.SaveChangesAsync();
                 }
                 else
                 {
@@ -300,21 +333,18 @@ namespace ProjectManagementSystem.Controllers
                     {
                         db.ProjectUsers.RemoveRange(pruser);
                     }
-                     var tasks = db.Tasks.Where(x => x.)
-                    db.Users.Remove(user);
                     await db.SaveChangesAsync();
-                }*/
-                /*
 
-                var projects = db.Projects.Where(x => x.Manager == id);
-                if(projects is not null)
-                {
-                    foreach (var x in projects)
+                    var tasks = db.Tasks.Where(x => x.UserId == id);
+                    if (tasks is not null)
                     {
-                        x.Manager
+                        db.Tasks.RemoveRange(tasks);
                     }
-                }*/
+                    await db.SaveChangesAsync();
 
+                    db.Users.RemoveRange(user);
+                    await db.SaveChangesAsync();
+                }
             }
             catch (Exception e)
             {

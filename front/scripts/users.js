@@ -149,19 +149,24 @@ async function Delete(button){
       for (var i = 0; i < cells.length; i++) {
       rowData.push(cells[i].textContent);
       }
-      
-      fetch(`https://localhost:44345/api/data/DeleteUser/${rowData[0]}`, {
+      let id = rowData[0];
+      let email = JSON.parse(window.localStorage.getItem('tokenKey')).username;
+      fetch(`https://localhost:44345/api/data/DeleteUser/${id}/${email}`, {
       method: 'Delete',
       headers: {
       'Content-Type': 'application/json'
-      },
+      }
       })
       .then(response => {
-        if (!response.ok) {
+        if (!response.ok) 
+        {
         throw new Error('Network response was not ok');
-      }
-        alert("the data deleted succesfully");
-        location.reload();
+        }
+        else
+        {
+          alert("the data deleted succesfully");
+          location.reload();
+        }
       })
       .catch(error => {
         console.error('There was a problem with the fetch request:', error);
