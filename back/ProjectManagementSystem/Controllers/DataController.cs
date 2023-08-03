@@ -289,9 +289,9 @@ namespace ProjectManagementSystem.Controllers
             }
             try
             {
-                if (user.Role == 1)
+                if (userDelete.Role == 1)
                 {
-                    if (user.Email == email) return BadRequest();
+                    if (userDelete.Email == email) return BadRequest();
 
                     var tasksAsUser = db.Tasks.Where(x => x.UserId == id);
                     if (tasksAsUser is not null)
