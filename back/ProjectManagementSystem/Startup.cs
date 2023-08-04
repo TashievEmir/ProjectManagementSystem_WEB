@@ -70,6 +70,9 @@ namespace ProjectManagementSystem
             services.AddTransient<IResetPassword, ResetPasswordService>();
             services.AddTransient<ISaveProjectService, SaveProjectService>();
             services.AddTransient<ISaveTaskService, SaveTaskService>();
+            services.AddTransient<IProjectsDataService, ProjectsDataService>();
+            services.AddTransient<ITasksDataService, TasksDataService>();
+            services.AddTransient<IUsersDataService, UsersDataService>();
 
         }
 
