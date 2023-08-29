@@ -1,18 +1,18 @@
 body{
     font-family: "Comic Sans MS";
-    color: #1e0000;
-    background-color: #EBDCB2;
+    color: #ffffff;
+    background-color: #FFFFFF;
     text-align: center;
 }
 .auth{
-    background-color: #C9A66B;
+    background-color: #8855ED;
     text-align: center;
     height: 100vh;
     width: 50%;
     margin-left: 25%;
 }
 .imgLogo{
-    background-color: #C9A66B;
+    background-color: #8855ED;
     height: 200px;
     weight: 200px
 }
@@ -32,10 +32,11 @@ body{
     display: flex;
 }
 button{
-    background-color: #EBDCB2;
+    background-color: #370E8A;
     margin-top: 20px;
     border: 0;
     margin-right: 40px;
+    color: #FFFFFF;
 }
 h4{
     margin-top: 20px;
@@ -61,7 +62,6 @@ button{
 }
 
 button:hover {
-        transform: scale(1.1);
-        background-color: white;
+        transform: scale(1.1);       
         box-shadow: 0 8px 8px #ccc, 0 -8px 8px #ccc;
 }

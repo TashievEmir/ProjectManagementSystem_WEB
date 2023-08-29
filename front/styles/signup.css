@@ -1,11 +1,11 @@
 body{
     font-family: "Comic Sans MS";
-    color: #1e0000;
-    background-color: #EBDCB2;
+    color: #ffffff;
+    background-color: #ffffff;
     text-align: center;
 }
 .signup{
-    background-color: #C9A66B;
+    background-color: #8855ED;
     text-align: center;
     height: 100vh;
     width: 50%;
@@ -15,7 +15,7 @@ h1{
 padding-top: 7%;
 }
 .imgLogo{
-    background-color: #C9A66B;
+    background-color: #8855ED;
     height: 200px;
     weight: 200px
 }
@@ -33,7 +33,7 @@ padding-top: 7%;
     display: flex;
 }
 button{
-    background-color: #EBDCB2;
+    background-color: #370E8A;
     margin-top: 20px;
     border: 0;
     margin-right: 40px;
@@ -58,6 +58,7 @@ button{
     border-radius: 0.5rem;
     cursor: pointer;
     transition: transform 0.2s ease-in-out;
+    color: #ffffff;
 }
 .hover-scale {
     transition: transform 0.2s ease-in-out;
@@ -65,7 +66,6 @@ button{
 
 button:hover {
         transform: scale(1.1);
-        background-color: white;
         box-shadow: 0 8px 8px #ccc, 0 -8px 8px #ccc;
 }
 
