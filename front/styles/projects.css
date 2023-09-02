@@ -1,6 +1,5 @@
 *{
-    font-family: "Comic Sans MS";
-    
+    font-family: "Comic Sans MS";   
     background-color: #ffffff;
 }
 body {
@@ -38,25 +37,22 @@ header button{
     border-style: solid;
     padding: 0.5rem 1rem;
     background-color: #8855ED;
+    color: #ffffff;
 }
 main {
     min-height:calc(100vh - 200px);
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    margin-top: 0.5%;
-    margin-bottom: 10%;
-    overflow: auto;
+
 }
 section {
     color: black;
     margin-left: 2%;
     margin-right: 2%;
     flex-basis: 80%;
-    margin-bottom: 40px;
     justify-content: center;
-    align-items: center;
-    max-height: 95%;
+    align-items: center;;
     overflow-y: auto;
 }
 table {
@@ -106,6 +102,7 @@ aside button{
     margin-top: 2%;
     margin-bottom: 3%;
     border-style: none;
+    font-size: medium;
 }
 aside button:hover{
     cursor: pointer;
@@ -117,7 +114,7 @@ footer {
     width: 100%;
     padding: 20px;
     text-align: center;
-    position: fixed;
+    position: absolute;
     bottom: 0;
 }
 footer p{
@@ -144,6 +141,6 @@ button{
 }
 
 button:hover {
-        transform: scale(1.1);
-        box-shadow: 0 8px 8px #ccc, 0 -8px 8px #ccc;
+        transform: scale(1.0);
+        box-shadow: 0 5px 5px #ccc, 0 -5px 5px #ccc;
 }

@@ -52,9 +52,9 @@ namespace ProjectManagementSystem.Controllers
         [HttpPost]
         public async Task<ActionResult<ProjectVM>> SaveProject(ProjectVM obj)
         {
-            saveProjectService.SaveProject(obj);
+            await saveProjectService.SaveProject(obj);
 
-            saveProjectService.SavePeopleInProject(obj);  
+            await saveProjectService.SavePeopleInProject(obj);  
             return Ok();
         }
 

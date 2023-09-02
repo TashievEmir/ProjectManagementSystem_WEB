@@ -4,6 +4,7 @@ using ProjectManagementSystem.Entity;
 using ProjectManagementSystem.Interfaces;
 using ProjectManagementSystem.ViewModels;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace ProjectManagementSystem.Services
@@ -20,24 +21,30 @@ namespace ProjectManagementSystem.Services
         }
         public async Task SavePeopleInProject(ProjectVM obj)
         {
-            var projectId = await db.Projects.FirstOrDefaultAsync(x => x.Name == obj.Name);
-            foreach (var item in obj.Members)
+            try
             {
-                ProjectUser projectUser = new ProjectUser()
+                var projectId = await db.Projects.FirstOrDefaultAsync(x => x.Name == obj.Name);
+                foreach (var item in obj.Members)
                 {
-                    ProjectId = projectId.Id,
-                    UserId = item
-                };
-                try
-                {
-                    await db.ProjectUsers.AddAsync(projectUser);
-                    await db.SaveChangesAsync();
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e);
+                    ProjectUser projectUser = new ProjectUser()
+                    {
+                        ProjectId = projectId.Id,
+                        UserId = item
+                    };
+                    try
+                    {
+                        await db.ProjectUsers.AddAsync(projectUser);
+                        await db.SaveChangesAsync();
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e);
+                    }
                 }
             }
+            catch(Exception e) { Console.WriteLine(e.Message); }
+
+            
         }
 
         public async Task SaveProject(ProjectVM obj)
