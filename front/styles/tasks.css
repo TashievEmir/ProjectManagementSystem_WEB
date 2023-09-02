@@ -40,11 +40,10 @@ header button{
     color: white;
 }
 main {
+    min-height:calc(100vh - 200px);
     display: flex;
     flex-direction: row;
-    height: 100%;
     justify-content: space-between;
-    padding: 20px;
     margin-top: 0.5%;
     margin-bottom: 10%;
 }
@@ -81,6 +80,7 @@ th {
 }
 
 aside {
+    padding-top: 2%;
     background: #8855ED;
     flex-grow: 1;
     text-align: center;
@@ -103,7 +103,6 @@ aside button{
 aside button:hover{
     cursor: pointer;
     background-color: #370E8A;
-    border-style: solid;
 }
 footer {
     background: #370E8A;

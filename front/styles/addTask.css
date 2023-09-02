@@ -41,9 +41,9 @@ header button{
     color: #ffffff;
 }
 main {
+    min-height:calc(100vh - 200px);
     display: flex;
     flex-direction: row;
-    height: 100%;
     justify-content: space-between;
     margin-top: 0.5%;
     margin-bottom: 10%;
@@ -87,6 +87,7 @@ select{
     border-color: #1e0000; 
 }
 aside {
+    padding-top: 2%;
     background: #8855ED;
     flex-grow: 1;
     text-align: center;

@@ -47,11 +47,11 @@ header button{
 }
 
 main {
+    min-height:calc(100vh - 200px);
     display: flex;
     flex-direction: row;
-    height: 100%;
     justify-content: space-between;
-    padding: 20px;
+    
 }
 
 section {
@@ -65,10 +65,9 @@ section {
 }
 
 aside {
-    /*flex: 1;*/
+    padding-top: 2%;
     background: #8855ED;
     flex-grow: 1;
-    /*height: 100%;*/
     text-align: center;
 }
 
@@ -80,7 +79,7 @@ aside img{
 aside button{
     background-color: #8855ED;
     width: 100%;
-    height: 15%;
+    height: 10%;
     margin-top: 2%;
     margin-bottom: 2%;
     border-style: none;
@@ -90,7 +89,7 @@ aside button{
 aside button:hover{
     cursor: pointer;
     background-color: #370E8A;
-    border-style: solid;
+    
 }
 
 footer {
@@ -112,12 +111,9 @@ button{
     cursor: pointer;
     transition: transform 0.2s ease-in-out;
 }
-.hover-scale {
-    transition: transform 0.2s ease-in-out;
-}
+
 
 button:hover {
-        transform: scale(1.1);
-        background-color: white;
-        box-shadow: 0 8px 8px #ccc, 0 -8px 8px #ccc;
+        transform: scale(1.0);
+        box-shadow: 0 5px 5px #ccc, 0 -5px 5px #ccc;
 }

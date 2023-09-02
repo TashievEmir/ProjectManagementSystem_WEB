@@ -1,0 +1,41 @@
+
+header {
+    background-color: red;
+    color: #fff;
+    height: 100px;
+}
+
+/* Create a container for the sidebar and main content */
+.container {
+    min-height:calc(100vh - 200px);
+    display: flex;
+     /* Allow the container to grow to fill available space */
+    background-color: blue;
+    height: 100%;
+}
+
+/* Style the sidebar */
+.sidebar {
+    float: left;
+    width: 25%; /* Adjust as needed */
+    background-color: green;
+    
+}
+
+/* Style the main content area */
+.mainContent {
+     /* Allow the main content to take up remaining space */
+    
+    background-color: yellow;
+}
+
+/* Style the footer */
+footer {
+    height: 100px;
+    background-color: brown;
+    color: #fff;
+    text-align: center;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
